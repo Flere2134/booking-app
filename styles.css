@@ -7,12 +7,14 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(to bottom, #f4f4f4, #e0e0e0);
+  background: linear-gradient(to bottom right, #271E1C, #066E70);
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0;
 }
+
 
 /* Auth card container */
 .auth-container {
@@ -27,6 +29,7 @@ body {
   flex-direction: column;
   gap: 1rem;
 }
+
 
 .auth-container h2 {
   text-align: center;
@@ -141,3 +144,27 @@ form button:hover {
   cursor: pointer;
   color: #888;
 }
+
+@media (max-width: 480px) {
+  .auth-container {
+    padding: 2rem 1rem;
+    margin: 0 1rem;
+    box-shadow: none;
+    border-radius: 8px;
+  }
+
+  form button {
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+
+  .toggle-password {
+    font-size: 1.2rem;
+    right: 10px;
+  }
+
+  .auth-container h2 {
+    font-size: 1.5rem;
+  }
+}
+
