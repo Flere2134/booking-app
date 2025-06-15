@@ -85,7 +85,6 @@ document.getElementById('registerForm')?.addEventListener('submit', function (e)
     }).catch((error) => {
       console.error("Failed to save user to Firestore:", error);
     });
-    
       console.log("Registered:", user.email);
       alert(`Welcome, ${name}!`);
     })
