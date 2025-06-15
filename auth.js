@@ -69,6 +69,23 @@ document.getElementById('registerForm')?.addEventListener('submit', function (e)
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
       const user = userCredential.user;
+      user.updateProfile({
+        displayName: name
+      }).then(() => {
+        console.log("Display name updated:", user.displayName);
+      }).catch((error) => {
+        console.error("Failed to update display name:", error);
+      });
+      firebase.firestore().collection("users").doc(user.uid).set({
+        name: name,
+        email: email,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      console.log("User data saved to Firestore");
+    }).catch((error) => {
+      console.error("Failed to save user to Firestore:", error);
+    });
+    
       console.log("Registered:", user.email);
       alert(`Welcome, ${name}!`);
     })
