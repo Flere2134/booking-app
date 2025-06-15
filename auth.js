@@ -26,3 +26,37 @@ document.getElementById('loginForm')?.addEventListener('submit', function (e) {
   // Placeholder for backend login logic
   alert(`Logged in as: ${email}`);
 });
+
+function createPasswordToggle(inputId) {
+  const passwordInput = document.getElementById(inputId);
+  if (!passwordInput) return;
+
+  // Wrap input in a div
+  const wrapper = document.createElement('div');
+  wrapper.classList.add('password-wrapper');
+  passwordInput.parentNode.insertBefore(wrapper, passwordInput);
+  wrapper.appendChild(passwordInput);
+
+  // Create icon
+  const icon = document.createElement('i');
+  icon.classList.add('bx', 'bx-show', 'toggle-password');
+  wrapper.appendChild(icon);
+
+  // Toggle logic
+  icon.addEventListener('click', () => {
+    const isHidden = passwordInput.type === 'password';
+    passwordInput.type = isHidden ? 'text' : 'password';
+
+    // Toggle icon class
+    icon.classList.toggle('bx-show', !isHidden);
+    icon.classList.toggle('bx-hide', isHidden);
+  });
+}
+
+// Run when DOM is loaded
+window.addEventListener('DOMContentLoaded', () => {
+  createPasswordToggle('password');
+  createPasswordToggle('loginPassword');
+});
+
+
