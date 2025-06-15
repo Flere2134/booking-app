@@ -20,5 +20,22 @@
     <p>Already have an account? <a href="login.html">Login here</a></p>
   </div>
   <script src="auth.js"></script>
+  <!-- Firebase App SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAhiU_vFXznLI-dDGIWKXKsJtldxD4z940",
+      authDomain: "booking-app-a81ec.firebaseapp.com",
+      projectId: "booking-app-a81ec",
+      storageBucket: "booking-app-a81ec.firebasestorage.app",
+      messagingSenderId: "905587671438",
+      appId: "1:905587671438:web:c7ad2eb82f7f5003aee4df"
+    };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
 </body>
 </html>

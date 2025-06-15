@@ -59,4 +59,40 @@ window.addEventListener('DOMContentLoaded', () => {
   createPasswordToggle('loginPassword');
 });
 
+// Register
+document.getElementById('registerForm')?.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
+
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log("Registered:", user.email);
+      alert(`Welcome, ${name}!`);
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+});
+
+// Login
+document.getElementById('loginForm')?.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log("Logged in:", user.email);
+      alert(`Welcome back, ${user.email}`);
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+});
+
+
 
