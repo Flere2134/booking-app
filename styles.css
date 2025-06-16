@@ -1,169 +1,487 @@
-/* Reset and base styles */
+/* Reset and Base Styles */
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(to bottom right, #271E1C, #066E70);
-  height: 100vh;
+  line-height: 1.6;
+  color: #333;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin: 0;
+  justify-content: center;
+  padding: 1rem;
 }
 
-
-/* Auth card container */
+/* Auth Container */
 .auth-container {
-  background-color: #1c2b33;
-  color: #ffffff;
-  padding: 2.5rem 2rem;
-  border-radius: 12px;
+  background: white;
+  border-radius: 16px;
+  padding: 3rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  max-width: 450px;
+  position: relative;
+  overflow: hidden;
 }
 
+.auth-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #007bff, #0056b3);
+}
 
+/* Header Styles */
 .auth-container h2 {
-  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #000;
   margin-bottom: 0.5rem;
-  color: #32d49b;
-  font-size: 1.8rem;
+  text-align: center;
 }
 
-.auth-container p {
-  font-size: 0.95rem;
+.auth-container::after {
+  content: 'DriveEase';
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #007bff;
+  opacity: 0.7;
+}
+
+/* Form Styles */
+form {
+  margin: 2rem 0;
+}
+
+/* Input Styles */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: #007bff;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+  color: #6c757d;
+  font-weight: 400;
+}
+
+/* Input Error States */
+input.error {
+  border-color: #dc3545;
+  background: #fff5f5;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+/* Button Styles */
+button[type="submit"] {
+  width: 100%;
+  background: #000;
+  color: white;
+  border: none;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+button[type="submit"]:hover {
+  background: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* Loading State */
+button[type="submit"]:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+button[type="submit"].loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  margin-left: -10px;
+  margin-top: -10px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Link Styles */
+p {
   text-align: center;
+  color: #6c757d;
+  font-size: 0.95rem;
   margin-top: 1rem;
 }
 
-.auth-container p a {
-  color: #32d49b;
+p a {
+  color: #007bff;
   text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+p a:hover {
+  color: #0056b3;
+  text-decoration: underline;
 }
 
-/* Flexbox row for name fields */
-form input[type="text"]:first-child + input[type="text"] {
-  margin-top: 0;
-}
-
-/* Two-column layout for first and last name */
-form input[type="text"]:first-child {
-  margin-bottom: 0;
-}
-
-#name,
-#lastname {
-  width: 48%;
-}
-
-#name,
-#email,
-#password,
-#loginEmail,
-#loginPassword,
-#confirmPassword,
-#lastname {
-  padding: 0.8rem;
+/* Success/Error Messages */
+.message {
+  padding: 1rem;
   border-radius: 8px;
-  border: none;
-  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+  text-align: center;
+  animation: slideIn 0.3s ease;
 }
 
-form input {
-  width: 100%;
-  display: block
+.message.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
 }
 
-/* Special wrapper for first+last name if you want to group */
-#name, #lastname {
-  display: inline-block;
+.message.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
 }
 
-/* Group input fields for better layout */
-#registerForm #name,
-#registerForm #lastname {
-  width: 100%;
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-#registerForm {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-#registerForm input#name,
-#registerForm input#lastname {
-  display: inline-block;
-}
-
-#registerForm input#name {
-  margin-right: 4%;
-}
-
-form button {
-  padding: 0.9rem;
-  background: #32d49b;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-form button:hover {
-  background: #28b389;
-}
-
-.password-wrapper {
+/* Social Login Section (if needed) */
+.social-login {
+  margin: 2rem 0;
   position: relative;
-  width: 100%;
 }
 
-.toggle-password {
+.social-login::before {
+  content: '';
   position: absolute;
   top: 50%;
-  right: 14px;
-  transform: translateY(-50%);
-  font-size: 1.3rem;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #e9ecef;
+  z-index: 1;
+}
+
+.social-login-text {
+  background: white;
+  padding: 0 1rem;
+  color: #6c757d;
+  font-size: 0.9rem;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.social-btn {
+  width: 100%;
+  background: white;
+  color: #333;
+  border: 2px solid #e9ecef;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-weight: 500;
   cursor: pointer;
-  color: #888;
+  transition: all 0.3s ease;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.social-btn:hover {
+  background: #f8f9fa;
+  border-color: #007bff;
+  transform: translateY(-1px);
+}
+
+.social-btn i {
+  font-size: 1.2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .auth-container {
+    padding: 2rem;
+    margin: 1rem;
+    border-radius: 12px;
+  }
+
+  .auth-container h2 {
+    font-size: 1.75rem;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    padding: 0.875rem 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  button[type="submit"] {
+    padding: 0.875rem 1.25rem;
+  }
 }
 
 @media (max-width: 480px) {
+  body {
+    padding: 0.5rem;
+  }
+
   .auth-container {
-    padding: 2rem 1rem;
-    margin: 0 1rem;
-    box-shadow: none;
-    border-radius: 8px;
-  }
-
-  form button {
-    font-size: 1rem;
-    padding: 0.75rem;
-  }
-
-  .toggle-password {
-    font-size: 1.2rem;
-    right: 10px;
+    padding: 1.5rem;
+    margin: 0.5rem;
   }
 
   .auth-container h2 {
     font-size: 1.5rem;
   }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    padding: 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  button[type="submit"] {
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Focus Styles for Accessibility */
+button:focus,
+input:focus,
+a:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .auth-container {
+    border: 2px solid #000;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    border-color: #333;
+  }
+
+  button[type="submit"] {
+    border: 2px solid #fff;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Dark Mode Support (if implemented) */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: #fff;
+  }
+
+  .auth-container {
+    background: #2d2d2d;
+    color: #fff;
+  }
+
+  .auth-container h2 {
+    color: #fff;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    background: #1a1a1a;
+    border-color: #444;
+    color: #fff;
+  }
+
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus {
+    background: #333;
+    border-color: #007bff;
+  }
+
+  input[type="text"]::placeholder,
+  input[type="email"]::placeholder,
+  input[type="password"]::placeholder {
+    color: #aaa;
+  }
+
+  p {
+    color: #ccc;
+  }
+}
+
+/* Additional Animation for Form Elements */
+.auth-container {
+  animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Form Validation Styling */
+.input-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input-group.valid input {
+  border-color: #28a745;
+  background: #f8fff9;
+}
+
+.input-group.valid::after {
+  content: '✓';
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #28a745;
+  font-weight: bold;
+}
+
+.input-group.invalid input {
+  border-color: #dc3545;
+  background: #fff5f5;
+}
+
+.input-group.invalid::after {
+  content: '✗';
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #dc3545;
+  font-weight: bold;
+}
+
+/* Password Strength Indicator */
+.password-strength {
+  height: 3px;
+  background: #e9ecef;
+  border-radius: 2px;
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.password-strength-bar {
+  height: 100%;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.password-strength-bar.weak {
+  width: 33%;
+  background: #dc3545;
+}
+
+.password-strength-bar.medium {
+  width: 66%;
+  background: #ffc107;
+}
+
+.password-strength-bar.strong {
+  width: 100%;
+  background: #28a745;
 }
