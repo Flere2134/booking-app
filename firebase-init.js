@@ -1,6 +1,7 @@
 // Firebase SDKs
 // NOTE: These scripts must still be loaded in the HTML!
 
+
 const firebaseConfig = {
   apiKey: "AIzaSyAhiU_vFXznLI-dDGIWKXKsJtldxD4z940",
   authDomain: "booking-app-a81ec.firebaseapp.com",
