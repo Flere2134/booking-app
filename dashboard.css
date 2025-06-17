@@ -77,6 +77,12 @@ body {
     font-size: 1.5rem;
 }
 
+.user-name {
+  margin-left: 5rem;
+  font-weight: 600;
+  color: #007bff;
+}
+
 /* Button Styles */
 .btn-primary {
     background: #000;

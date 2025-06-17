@@ -1,8 +1,24 @@
 firebase.auth().onAuthStateChanged(function(user) {
-  if (!user) {
-    window.location.href = "login.html";
+  const loginBtn = document.querySelector('.login-btn');
+  const signupBtn = document.querySelector('.signup-btn');
+  const userNameSpan = document.querySelector('.user-name');
+
+  if (user) {
+    // Show user name
+    userNameSpan.textContent = `Hi, ${user.displayName || user.email}`;
+    userNameSpan.style.display = 'inline';
+
+    // Hide auth buttons
+    loginBtn.style.display = 'none';
+    signupBtn.style.display = 'none';
+  } else {
+    // Not logged in, ensure buttons visible
+    loginBtn.style.display = 'inline-block';
+    signupBtn.style.display = 'inline-block';
+    userNameSpan.style.display = 'none';
   }
 });
+
 
 // DOM Elements
 const elements = {
