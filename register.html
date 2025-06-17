@@ -14,7 +14,10 @@
     <form id="registerForm">
       <input type="text" placeholder="Full Name" id="name" required />
       <input type="email" placeholder="Email" id="email" required />
-      <input type="password" placeholder="Password" id="password" required />
+      <div class="input-wrapper">
+        <input type="password" id="password" placeholder="Password" required />
+        <i class='bx bx-show toggle-password' toggle="#password"></i>
+      </div>
       <button type="submit">Register</button>
     </form>
     <p>Already have an account? <a href="login.html">Login here</a></p>

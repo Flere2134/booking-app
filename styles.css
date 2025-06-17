@@ -49,7 +49,7 @@ body {
 }
 
 .auth-container::after {
-  content: 'DriveEase';
+  content: 'LAZOS';
   position: absolute;
   top: 1rem;
   right: 1.5rem;
@@ -484,4 +484,27 @@ a:focus {
 .password-strength-bar.strong {
   width: 100%;
   background: #28a745;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper input {
+  padding-right: 3rem; /* space for icon */
+}
+
+.toggle-password {
+  position: absolute;
+  top: 35%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.25rem;
+  color: #fff;
+  transition: color 0.2s ease;
+}
+
+.toggle-password:hover {
+  color: #007bff;
 }
