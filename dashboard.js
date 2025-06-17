@@ -1,3 +1,9 @@
+firebase.auth().onAuthStateChanged(function(user) {
+  if (!user) {
+    window.location.href = "login.html";
+  }
+});
+
 // DOM Elements
 const elements = {
     mobileMenuToggle: document.querySelector('.mobile-menu-toggle'),
