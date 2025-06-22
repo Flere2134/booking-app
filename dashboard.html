@@ -1,243 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LAZOS - Your Private Driver Service</title>
-  <link rel="stylesheet" href="dashboard.css">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LAZOS - Private Vehicle Booking</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
 </head>
-
 <body>
-  <!-- Header -->
-  <header class="header">
-    <nav class="navbar">
-      <div class="nav-brand">
-        <h1>LAZOS</h1>
-      </div>
-      <div class="nav-menu">
-        <a href="#" class="nav-link">Ride</a>
-        <a href="#" class="nav-link">Drive</a>
-        <a href="#" class="nav-link">Business</a>
-        <a href="#" class="nav-link">About</a>
-      </div>
-      <div class="nav-actions">
-        <div class="language-selector">
-          <i class="fas fa-globe"></i>
-          <span>EN</span>
+
+  <nav>
+    <div class="logo">LAZOS</div>
+    <div class="nav-links">
+      <a href="#">Ride</a>
+      <a href="#">Drive</a>
+      <a href="#">Business</a>
+      <a href="#">About</a>
+      <a href="#">Help</a>
+      <a href="#">Log in</a>
+      <button class="btn">Sign up</button>
+    </div>
+  </nav>
+
+  <section class="dashboard">
+    <div class="left-content">
+      <h1>Go anywhere with LAZOS</h1>
+      <div class="form-group">
+        <div class="input-wrapper">
+          <i class='bx bx-map'></i>
+          <input type="text" id="pickup" placeholder="Pickup location" />
         </div>
-        <a href="#" class="nav-link">Help</a>
-        <a href="login.html" class="btn-secondary login-btn">Log in</a>
-        <a href="register.html" class="btn-primary signup-btn">Sign up</a>
-        <span class="user-name" style="display:none;"></span>
-      </div>
-      <div class="mobile-menu-toggle">
-        <i class="fas fa-bars"></i>
-      </div>
-    </nav>
-  </header>
-
-  <!-- Main Content -->
-  <main class="main-content">
-    <div class="container">
-      <div class="dashboard-grid">
-        <!-- Left Section - Booking Form -->
-        <div class="booking-section">
-          <div class="hero-text">
-            <h1>Insert short slogan <span class="brand-highlight">LAZOS</span></h1>
-          </div>
-
-          <div class="booking-form-container">
-            <form class="booking-form" id="bookingForm">
-              <!-- Location Inputs -->
-              <div class="location-inputs">
-                <div class="input-group">
-                  <div class="location-icon pickup-icon"></div>
-                  <input type="text" id="pickupLocation" placeholder="Pickup location" class="location-input"
-                    autocomplete="off">
-                </div>
-                <div class="input-group">
-                  <div class="location-icon dropoff-icon"></div>
-                  <input type="text" id="dropoffLocation" placeholder="Drop-off location" class="location-input"
-                    autocomplete="off">
-                </div>
-              </div>
-
-              <!-- Date and Time -->
-              <div class="datetime-inputs">
-                <div class="input-group">
-                  <i class="fas fa-calendar-alt input-icon"></i>
-                  <input type="date" id="bookingDate" class="datetime-input">
-                </div>
-                <div class="input-group">
-                  <i class="fas fa-clock input-icon"></i>
-                  <select id="bookingTime" class="datetime-input">
-                    <option value="">Now</option>
-                    <option value="30min">In 30 minutes</option>
-                    <option value="1hr">In 1 hour</option>
-                    <option value="2hr">In 2 hours</option>
-                    <option value="custom">Custom time</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- Action Buttons -->
-              <div class="form-actions">
-                <button type="button" class="btn-primary btn-large" id="seePricesBtn">
-                  See prices
-                </button>
-                <div class="login-prompt">
-                  <a href="#" class="login-link">Log in to see your recent activity</a>
-                </div>
-              </div>
-            </form>
-          </div>
+        <div class="input-wrapper">
+          <i class='bx bx-map-pin'></i>
+          <input type="text" id="dropoff" placeholder="Dropoff location" />
         </div>
-
-        <!-- Right Section - Hero Image -->
-        <div class="hero-section">
-          <div class="hero-image">
-            <img
-              src="beach.png"
-              alt="City transportation" class="hero-img">
-            <div class="hero-overlay">
-              <div class="hero-content">
-                <h2>Professional drivers at your service</h2>
-                <p>Safe, reliable, and comfortable rides whenever you need them</p>
-              </div>
-            </div>
-          </div>
-        </div>
+      </div>
+      <div class="action-buttons">
+        <button class="btn" onclick="seePrices()">Book Today!</button>
+        <a href="#" class="recent-link">Log in to see your recent activity</a>
       </div>
     </div>
 
-    <!-- Suggestions Section -->
-    <section class="suggestions-section">
-      <div class="container">
-        <h2 class="section-title">Suggestions</h2>
-        <div class="suggestions-grid">
-          <div class="suggestion-card">
-            <div class="suggestion-icon">
-              <i class="fas fa-car"></i>
-            </div>
-            <div class="suggestion-content">
-              <h3>Ride</h3>
-              <p>Go anywhere with our professional drivers. Request a ride and get picked up by a nearby driver.</p>
-              <button class="suggestion-btn">Book a ride</button>
-            </div>
-          </div>
-
-          <div class="suggestion-card">
-            <div class="suggestion-icon">
-              <i class="fas fa-clock"></i>
-            </div>
-            <div class="suggestion-content">
-              <h3>Reserve</h3>
-              <p>Reserve your ride in advance so you can relax knowing your driver is on the way.</p>
-              <button class="suggestion-btn">Schedule ride</button>
-            </div>
-          </div>
-
-          <div class="suggestion-card">
-            <div class="suggestion-icon">
-              <i class="fas fa-briefcase"></i>
-            </div>
-            <div class="suggestion-content">
-              <h3>Business</h3>
-              <p>Create a business account and manage rides for your team with centralized billing.</p>
-              <button class="suggestion-btn">Get started</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Mobile Menu Overlay -->
-  <div class="mobile-menu-overlay" id="mobileMenuOverlay">
-    <div class="mobile-menu">
-      <div class="mobile-menu-header">
-        <h2>LAZOS</h2>
-        <button class="mobile-menu-close" id="mobileMenuClose">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      <div class="mobile-menu-content">
-        <a href="#" class="mobile-menu-link">Ride</a>
-        <a href="#" class="mobile-menu-link">Drive</a>
-        <a href="#" class="mobile-menu-link">Business</a>
-        <a href="#" class="mobile-menu-link">About</a>
-        <a href="#" class="mobile-menu-link">Help</a>
-        <div class="mobile-menu-actions">
-          <a href="login.html" class="btn-secondary btn-full">Log in</a>
-          <a href="register.html" class="btn-primary btn-full">Sign up</a>
-        </div>
-      </div>
+    <div class="right-content">
+      <img src="baguio_scenery.png" alt="Family with car illustration" />
     </div>
-  </div>
-
-  <!-- Price Modal -->
-  <div class="modal-overlay" id="priceModalOverlay">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>Choose your ride</h3>
-        <button class="modal-close" id="priceModalClose">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      <div class="modal-content">
-        <div class="ride-options">
-          <div class="ride-option">
-            <div class="ride-info">
-              <div class="ride-icon">
-                <i class="fas fa-car"></i>
-              </div>
-              <div class="ride-details">
-                <h4>LAZOS Standard</h4>
-                <p>Comfortable sedan for up to 4 passengers</p>
-                <span class="ride-time">5-10 min away</span>
-              </div>
-            </div>
-            <div class="ride-price">$25</div>
-          </div>
-
-          <div class="ride-option">
-            <div class="ride-info">
-              <div class="ride-icon">
-                <i class="fas fa-car-side"></i>
-              </div>
-              <div class="ride-details">
-                <h4>LAZOS Premium</h4>
-                <p>Luxury vehicle with premium service</p>
-                <span class="ride-time">8-12 min away</span>
-              </div>
-            </div>
-            <div class="ride-price">$45</div>
-          </div>
-
-          <div class="ride-option">
-            <div class="ride-info">
-              <div class="ride-icon">
-                <i class="fas fa-users"></i>
-              </div>
-              <div class="ride-details">
-                <h4>LAZOS XL</h4>
-                <p>SUV for up to 6 passengers</p>
-                <span class="ride-time">10-15 min away</span>
-              </div>
-            </div>
-            <div class="ride-price">$35</div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-primary btn-full" id="confirmBookingBtn">Confirm booking</button>
-      </div>
-    </div>
-  </div>
+  </section>
 
   <script src="dashboard.js"></script>
 </body>
-
 </html>
