@@ -48,6 +48,41 @@ function seePrices() {
   alert(`You booked a ride from ${pickup} to ${dropoff} on ${date} at ${time}.`);
 }
 
+async function seePrices() {
+  // ... (validation logic remains unchanged)
+
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    alert("Please log in to complete the booking.");
+    return;
+  }
+
+  try {
+    const db = firebase.firestore();
+    await db.collection("bookings").add({
+      userId: user.uid,
+      pickup,
+      dropoff,
+      date,
+      time,
+      status: "pending",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    alert("Your booking has been submitted successfully!");
+    // Optionally: Clear form
+    document.getElementById("pickup").value = "";
+    document.getElementById("dropoff").value = "";
+    document.getElementById("booking-date").value = "";
+    document.getElementById("booking-time").value = "";
+    seePricesBtn.disabled = true;
+  } catch (error) {
+    console.error("Booking failed:", error);
+    alert("Something went wrong. Please try again.");
+  }
+}
+
+
 // Button enable/disable logic
 const pickupInput = document.getElementById("pickup");
 const dropoffInput = document.getElementById("dropoff");

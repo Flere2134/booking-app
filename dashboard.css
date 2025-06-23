@@ -18,6 +18,11 @@ body {
 
 /* NAVBAR */
 nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -73,9 +78,10 @@ nav {
 
 .left-content {
   max-width: 50%;
-  flex: 0 0 30%;      
+  flex: 0 0 40%;
   padding-right: 3rem;
   margin-left: 50px;
+  margin-top: 30px;
 }
 
 .left-content h1 {
