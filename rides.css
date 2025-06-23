@@ -1,0 +1,128 @@
+:root {
+  --bg-color: #FFF9ED;
+  --text-color: #1C1C1A;
+  --accent-color: #9BB8C4;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  padding-top: 80px;
+}
+
+/* Header */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--text-color);
+  color: var(--bg-color);
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--bg-color);
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  color: var(--accent-color);
+}
+
+.btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 20px;
+  background-color: var(--text-color);
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn:hover {
+  background-color: var(--accent-color);
+  color: #fff;
+}
+
+.ride-selection-container {
+  display: flex;
+  gap: 3rem;
+  padding: 2rem 5%;
+  align-items: flex-start;
+}
+
+/* Left Info */
+.left-info {
+  flex: 1;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Right Options */
+.right-options {
+  flex: 2;
+}
+
+.ride-option {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ride-option:hover {
+  border-color: var(--accent-color);
+}
+
+.ride-option.active {
+  border-color: var(--accent-color);
+  background-color: #f0f8ff;
+}
+
+.ride-option i {
+  font-size: 2rem;
+  color: var(--accent-color);
+}
+
+.payment-label {
+  margin-top: 2rem;
+}
+
+#paymentMethod {
+  padding: 0.6rem;
+  width: 100%;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
+
+.confirm-btn {
+  margin-top: 2rem;
+  width: 100%;
+}

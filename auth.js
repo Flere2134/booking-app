@@ -59,13 +59,16 @@ document.getElementById('loginForm')?.addEventListener('submit', function (e) {
     return;
   }
 
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(() => {
-      window.location.href = "dashboard.html"; // ✅ Redirect to dashboard
-    })
-    .catch((error) => {
-      alert(error.message);
-    });
+  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+  .then(() => {
+    return firebase.auth().signInWithEmailAndPassword(email, password);
+  })
+  .then(() => {
+    window.location.href = "dashboard.html";
+  })
+  .catch((error) => {
+    alert(error.message);
+  });
 });
 
 // ✅ DOM Ready

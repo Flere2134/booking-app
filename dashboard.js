@@ -15,7 +15,7 @@ window.onload = () => {
 };
 
 // Booking handler
-function seePrices() {
+async function seePrices() {
   const pickup = document.getElementById("pickup").value.trim();
   const dropoff = document.getElementById("dropoff").value.trim();
   const date = document.getElementById("booking-date").value;
@@ -28,60 +28,40 @@ function seePrices() {
 
   const now = new Date();
   const bookingDateTime = new Date(`${date}T${time}`);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // midnight today
-
-  if (bookingDateTime < now) {
-    alert("Please choose a future date and time for your booking.");
-    return;
-  }
-
   const threeHoursFromNow = new Date(now.getTime() + 3 * 60 * 60 * 1000);
-  if (
-    bookingDateTime.toDateString() === now.toDateString() &&
-    bookingDateTime < threeHoursFromNow
-  ) {
+
+  if (bookingDateTime < threeHoursFromNow && bookingDateTime.toDateString() === now.toDateString()) {
     alert("Bookings must be at least 3 hours from now.");
     return;
   }
 
-  alert(`You booked a ride from ${pickup} to ${dropoff} on ${date} at ${time}.`);
-}
+  firebase.auth().onAuthStateChanged(async (user) => {
+    if (!user) {
+      alert("Please log in to continue.");
+      return;
+    }
 
-async function seePrices() {
-  // ... (validation logic remains unchanged)
-
-  const user = firebase.auth().currentUser;
-  if (!user) {
-    alert("Please log in to complete the booking.");
-    return;
-  }
-
-  try {
     const db = firebase.firestore();
-    await db.collection("bookings").add({
-      userId: user.uid,
-      pickup,
-      dropoff,
-      date,
-      time,
-      status: "pending",
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
 
-    alert("Your booking has been submitted successfully!");
-    // Optionally: Clear form
-    document.getElementById("pickup").value = "";
-    document.getElementById("dropoff").value = "";
-    document.getElementById("booking-date").value = "";
-    document.getElementById("booking-time").value = "";
-    seePricesBtn.disabled = true;
-  } catch (error) {
-    console.error("Booking failed:", error);
-    alert("Something went wrong. Please try again.");
-  }
+    try {
+      const docRef = await db.collection("bookings").add({
+        userId: user.uid,
+        pickup,
+        dropoff,
+        date,
+        time,
+        status: "in_progress",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      // ✅ Redirect with booking ID
+      window.location.href = `rides.html?bookingId=${docRef.id}`;
+    } catch (error) {
+      console.error("Error creating booking:", error);
+      alert("Booking failed. Try again.");
+    }
+  });
 }
-
 
 // Button enable/disable logic
 const pickupInput = document.getElementById("pickup");
