@@ -75,6 +75,7 @@ nav {
   max-width: 50%;
   flex: 0 0 30%;      
   padding-right: 3rem;
+  margin-left: 50px;
 }
 
 .left-content h1 {
