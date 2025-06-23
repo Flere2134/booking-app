@@ -29,7 +29,7 @@
     </div>
 
     <div class="right-options">
-      <h2>Choose a Ride</h2>
+      <h2>Choose a RIDE</h2>
       <div class="ride-option" data-type="Sedan" data-price="1500">
         <i class='bx bx-car'></i>
         <div>
@@ -52,15 +52,20 @@
         </div>
       </div>
 
-      <h3 class="payment-label">Payment Method</h3>
+      <h3 class="payment-label">PAYMENT METHOD</h3>
       <select id="paymentMethod">
-        <option value="Cash">Cash</option>
-        <option value="Card">Credit/Debit Card</option>
+        <option value="Cash">💵 Cash</option>
+        <option value="Card">💳 Credit/Debit Card</option>
       </select>
 
       <button id="confirmBooking" class="btn confirm-btn">Confirm Booking</button>
     </div>
   </main>
+
+    <!-- Firebase CDN with compat mode (UMD bundle for browsers) -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
 
   <script>
     const firebaseConfig = {
@@ -70,10 +75,6 @@
     };
     firebase.initializeApp(firebaseConfig);
   </script>
-  <!-- Firebase CDN with compat mode (UMD bundle for browsers) -->
-  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
 
   <script src="rides.js"></script>
 </body>

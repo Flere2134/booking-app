@@ -1,7 +1,7 @@
 :root {
   --bg-color: #FFF9ED;
   --text-color: #1C1C1A;
-  --accent-color: #9BB8C4;
+  --accent-color: #3A7CA5;
 }
 
 body {
@@ -74,7 +74,8 @@ nav {
 .left-info {
   flex: 1;
   background: #fff;
-  padding: 2rem;
+  padding-left: 1.5rem;
+  padding-bottom: 1rem;
   border-radius: 10px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08);
 }

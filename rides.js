@@ -6,10 +6,15 @@ function getQueryParam(param) {
 
 const bookingId = getQueryParam("bookingId");
 const db = firebase.firestore();
-
 let selectedRide = null;
 
-window.onload = async () => {
+// ✅ Ensure user is logged in before fetching booking
+firebase.auth().onAuthStateChanged(async (user) => {
+  if (!user) {
+    alert("You must be logged in to view this page.");
+    return;
+  }
+
   if (!bookingId) {
     alert("Missing booking ID.");
     return;
@@ -24,7 +29,7 @@ window.onload = async () => {
 
     const data = doc.data();
 
-    // Display booking info in UI
+    // ✅ Display booking info in UI
     document.getElementById("pickupDisplay").textContent = data.pickup;
     document.getElementById("dropoffDisplay").textContent = data.dropoff;
     document.getElementById("dateDisplay").textContent = data.date;
@@ -34,7 +39,7 @@ window.onload = async () => {
     console.error("Error fetching booking:", error);
     alert("Failed to load booking.");
   }
-};
+});
 
 // 🚘 Ride selection UI logic
 document.querySelectorAll(".ride-option").forEach(option => {
@@ -71,7 +76,7 @@ document.getElementById("confirmBooking").addEventListener("click", async () => 
     });
 
     alert("Your booking has been confirmed!");
-    window.location.href = "confirmation.html"; // ✅ Add this page if you want a success screen
+    window.location.href = "confirmation.html"; // 🎉 Your success screen
 
   } catch (error) {
     console.error("Booking update failed:", error);
