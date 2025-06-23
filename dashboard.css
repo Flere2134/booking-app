@@ -74,7 +74,7 @@ nav {
 .left-content {
   max-width: 50%;
   flex: 0 0 30%;      
-  transform: translateX(70px);
+  padding-right: 3rem;
 }
 
 .left-content h1 {
@@ -133,7 +133,8 @@ input[type="text"] {
 
 /* IMAGE SECTION */
 .right-content img {
-  max-width: 100%;
+  width: 90%;
+  max-width: 800px;
   height: auto;
   border-radius: 50px;
   transform: translateX(10px);
