@@ -1,12 +1,20 @@
 window.onload = () => {
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const dd = String(today.getDate()).padStart(2, '0');
-  const formattedToday = `${yyyy}-${mm}-${dd}`;
-  document.getElementById("booking-date").setAttribute("min", formattedToday);
+  // Initialize Flatpickr date picker
+  flatpickr("#booking-date", {
+    dateFormat: "m-d-Y",
+    minDate: "today"
+  });
+
+  // Initialize Flatpickr time picker
+  flatpickr("#booking-time", {
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "H:i",
+    time_24hr: true
+  });
 };
 
+// Booking handler
 function seePrices() {
   const pickup = document.getElementById("pickup").value.trim();
   const dropoff = document.getElementById("dropoff").value.trim();
@@ -28,9 +36,7 @@ function seePrices() {
     return;
   }
 
-  // Check if booking is for today and less than 3 hours from now
   const threeHoursFromNow = new Date(now.getTime() + 3 * 60 * 60 * 1000);
-
   if (
     bookingDateTime.toDateString() === now.toDateString() &&
     bookingDateTime < threeHoursFromNow
@@ -42,6 +48,7 @@ function seePrices() {
   alert(`You booked a ride from ${pickup} to ${dropoff} on ${date} at ${time}.`);
 }
 
+// Button enable/disable logic
 const pickupInput = document.getElementById("pickup");
 const dropoffInput = document.getElementById("dropoff");
 const dateInput = document.getElementById("booking-date");
@@ -58,8 +65,7 @@ function validateFormFields() {
   seePricesBtn.disabled = !isFilled;
 }
 
-// Attach listeners to check every time user types/selects
+// Attach input listeners
 [pickupInput, dropoffInput, dateInput, timeInput].forEach((input) =>
   input.addEventListener("input", validateFormFields)
 );
-

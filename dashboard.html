@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LAZOS - Private Vehicle Booking</title>
   <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 </head>
@@ -32,11 +33,11 @@
         </div>
         <div class="input-wrapper">
           <i class='bx bx-calendar'></i>
-          <input type="date" id="booking-date" min="" />
+          <input type="text" id="booking-date" placeholder="Select date" readonly>
         </div>
-          <div class="input-wrapper">
+        <div class="input-wrapper">
           <i class='bx bx-time'></i>
-          <input type="time" id="booking-time">
+          <input type="text" id="booking-time" placeholder="Select time" readonly>
         </div>
       </div>
       <div class="action-buttons">
@@ -50,6 +51,7 @@
     </div>
   </section>
 
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="dashboard.js"></script>
 </body>
 </html>
