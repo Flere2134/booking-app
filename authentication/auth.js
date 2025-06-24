@@ -64,7 +64,7 @@ document.getElementById('loginForm')?.addEventListener('submit', function (e) {
     return firebase.auth().signInWithEmailAndPassword(email, password);
   })
   .then(() => {
-    window.location.href = "dashboard.html";
+    window.location.href = "../dashboard/dashboard.html";
   })
   .catch((error) => {
     alert(error.message);

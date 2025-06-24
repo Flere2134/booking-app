@@ -55,7 +55,7 @@ async function seePrices() {
       });
 
       // ✅ Redirect with booking ID
-      window.location.href = `rides.html?bookingId=${docRef.id}`;
+      window.location.href = `../ride-selection/rides.html?bookingId=${docRef.id}`;
     } catch (error) {
       console.error("Error creating booking:", error);
       alert("Booking failed. Try again.");
@@ -84,3 +84,33 @@ function validateFormFields() {
 [pickupInput, dropoffInput, dateInput, timeInput].forEach((input) =>
   input.addEventListener("input", validateFormFields)
 );
+
+// 🔐 Navbar login/logout dropdown
+firebase.auth().onAuthStateChanged((user) => {
+  const nav = document.getElementById("navLinks");
+
+  if (user) {
+    const name = user.displayName || "My Account";
+
+    nav.innerHTML = `
+      <div class="user-dropdown">
+        <button class="btn dropdown-toggle">${name} <i class='bx bx-chevron-down'></i></button>
+        <div class="dropdown-menu">
+          <a href="#" id="logoutBtn">Log out</a>
+        </div>
+      </div>
+    `;
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      firebase.auth().signOut().then(() => {
+        window.location.href = "../dashboard/dashboard.html";
+      });
+    });
+
+  } else {
+    nav.innerHTML = `
+      <a href="../authentication/login.html"><button class="btn">Log in</button></a>
+      <a href="../authentication/register.html"><button class="btn">Sign up</button></a>
+    `;
+  }
+});
