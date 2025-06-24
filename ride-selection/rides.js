@@ -83,3 +83,33 @@ document.getElementById("confirmBooking").addEventListener("click", async () => 
     alert("Something went wrong. Please try again.");
   }
 });
+
+// 🧑‍💼 User dropdown and logout
+firebase.auth().onAuthStateChanged((user) => {
+  const nav = document.getElementById("navLinks");
+
+  if (user) {
+    const name = user.displayName || "My Account";
+
+    nav.innerHTML = `
+      <div class="user-dropdown">
+        <button class="btn dropdown-toggle">${name} <i class='bx bx-chevron-down'></i></button>
+        <div class="dropdown-menu">
+          <a href="#" id="logoutBtn">Log out</a>
+        </div>
+      </div>
+    `;
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      firebase.auth().signOut().then(() => {
+        window.location.href = "../dashboard/dashboard.html";
+      });
+    });
+
+  } else {
+    nav.innerHTML = `
+      <a href="../authentication/login.html"><button class="btn">Log in</button></a>
+      <a href="../authentication/register.html"><button class="btn">Sign up</button></a>
+    `;
+  }
+});
