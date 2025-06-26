@@ -1,0 +1,105 @@
+:root {
+  --bg-color: #FFF9ED;
+  --text-color: #1C1C1A;
+  --accent-color: #3A7CA5;
+  --green: #4CAF50;
+  --blue: #2196F3;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  padding-top: 80px;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--text-color);
+  color: var(--bg-color);
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.nav-links a, .btn {
+  text-decoration: none;
+  color: var(--bg-color);
+  font-weight: 500;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.6rem 1rem;
+  border-radius: 20px;
+}
+
+.btn:hover, .nav-links a:hover {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.activity-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.booking-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  position: relative;
+}
+
+.booking-status {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  color: white;
+}
+
+.booking-status.current {
+  background-color: var(--blue);
+}
+
+.booking-status.completed {
+  background-color: var(--green);
+}
+
+.booking-card p {
+  margin: 0.4rem 0;
+  line-height: 1.6;
+}

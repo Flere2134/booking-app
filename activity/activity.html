@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Activity - LAZOS</title>
+
+  <!-- Boxicons & CSS -->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="activity.css" />
+</head>
+<body>
+
+  <nav>
+    <div class="logo">LAZOS</div>
+    <div class="nav-links" id="navLinks">
+      <!-- Populated dynamically -->
+    </div>
+  </nav>
+
+  <main class="activity-container">
+    <h1>Your Bookings</h1>
+    <div id="bookingsList" class="bookings-list">
+      <!-- Bookings will render here -->
+    </div>
+  </main>
+
+  <!-- Firebase CDN with compat mode -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
+
+  <script src="../firebase-init.js"></script>
+  <script src="activity.js"></script>
+</body>
+</html>
