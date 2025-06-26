@@ -52,6 +52,20 @@ nav {
   color: var(--accent-color);
 }
 
+.nav-text-link {
+  color: var(--bg-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: color 0.2s ease;
+}
+
+.nav-text-link:hover {
+  color: var(--accent-color);
+}
+
 .btn {
   padding: 0.6rem 1.2rem;
   border: none;

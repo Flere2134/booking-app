@@ -50,6 +50,20 @@ nav {
   border-radius: 20px;
 }
 
+.nav-text-link {
+  color: var(--bg-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: color 0.2s ease;
+}
+
+.nav-text-link:hover {
+  color: var(--accent-color);
+}
+
 .btn:hover, .nav-links a:hover {
   background-color: var(--accent-color);
   color: white;

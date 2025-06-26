@@ -4,6 +4,7 @@ firebase.auth().onAuthStateChanged(async (user) => {
   if (user) {
     const name = user.displayName || "My Account";
     nav.innerHTML = `
+      <a href="../activity/activity.html" class="nav-text-link">Activity</a>
       <div class="user-dropdown">
         <button class="btn dropdown-toggle">${name} <i class='bx bx-chevron-down'></i></button>
         <div class="dropdown-menu">
@@ -13,7 +14,7 @@ firebase.auth().onAuthStateChanged(async (user) => {
     `;
     document.getElementById("logoutBtn").addEventListener("click", () => {
       firebase.auth().signOut().then(() => {
-        window.location.href = "../authentication/login.html";
+        window.location.href = "../dashboard/dashboard.html";
       });
     });
 
