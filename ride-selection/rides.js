@@ -11,7 +11,7 @@ let selectedRide = null;
 // ✅ Ensure user is logged in before fetching booking
 firebase.auth().onAuthStateChanged(async (user) => {
   if (!user) {
-    alert("You must be logged in to view this page.");
+    window.location.href = "../dashboard/dashboard.html";
     return;
   }
 
