@@ -4,7 +4,7 @@ firebase.auth().onAuthStateChanged(async (user) => {
   if (user) {
     const name = user.displayName || "My Account";
     nav.innerHTML = `
-      <a href="../activity/activity.html" class="nav-text-link">Activity</a>
+      <a href="activity.html" class="nav-text-link">Activity</a>
       <div class="user-dropdown">
         <button class="btn dropdown-toggle">${name} <i class='bx bx-chevron-down'></i></button>
         <div class="dropdown-menu">
@@ -12,6 +12,7 @@ firebase.auth().onAuthStateChanged(async (user) => {
         </div>
       </div>
     `;
+    
     document.getElementById("logoutBtn").addEventListener("click", () => {
       firebase.auth().signOut().then(() => {
         window.location.href = "../dashboard/dashboard.html";
@@ -54,12 +55,18 @@ async function loadUserBookings(uid) {
         <span class="booking-status ${isCompleted ? 'completed' : 'current'}">
           ${isCompleted ? "COMPLETED" : "CURRENT"}
         </span>
-        <p><strong>Pickup:</strong> ${data.pickup}</p>
-        <p><strong>Dropoff:</strong> ${data.dropoff}</p>
-        <p><strong>Date:</strong> ${data.date}</p>
-        <p><strong>Time:</strong> ${data.time}</p>
-        <p><strong>Vehicle:</strong> ${data.vehicle || 'N/A'}</p>
-        <p><strong>Price:</strong> ₱${data.price || 'N/A'}</p>
+        <div class="booking-grid">
+          <div class="left-col">
+            <p><strong>Pickup:</strong> ${data.pickup}</p>
+            <p><strong>Dropoff:</strong> ${data.dropoff}</p>
+            <p><strong>Price:</strong> ₱${data.price || 'N/A'}</p>
+          </div>
+          <div class="right-col">
+            <p><strong>Time:</strong> ${data.time}</p>
+            <p><strong>Date:</strong> ${data.date}</p>
+            <p><strong>Vehicle:</strong> ${data.vehicle || 'N/A'}</p>
+          </div>
+        </div>
       `;
 
       list.appendChild(card);
