@@ -74,9 +74,8 @@ document.getElementById("confirmBooking").addEventListener("click", async () => 
       paymentMethod: document.getElementById("paymentMethod").value,
       status: "pending"
     });
-
-    alert("Your booking has been confirmed!");
-    window.location.href = "confirmation.html"; // 🎉 Your success screen
+    
+    window.location.href = "../activity/activity.html"; // 🎉 Your success screen
 
   } catch (error) {
     console.error("Booking update failed:", error);

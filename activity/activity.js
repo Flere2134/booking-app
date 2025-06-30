@@ -4,7 +4,7 @@ firebase.auth().onAuthStateChanged(async (user) => {
   if (user) {
     const name = user.displayName || "My Account";
     nav.innerHTML = `
-      <a href="activity.html" class="nav-text-link">Activity</a>
+      <a href="../dashboard/dashboard.html" class="nav-text-link">Home</a>
       <div class="user-dropdown">
         <button class="btn dropdown-toggle">${name} <i class='bx bx-chevron-down'></i></button>
         <div class="dropdown-menu">
