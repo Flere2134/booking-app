@@ -108,6 +108,10 @@ firebase.auth().onAuthStateChanged((user) => {
       });
     });
 
+    document.querySelector('.dropdown-toggle')?.addEventListener('click', () => {
+      document.querySelector('.dropdown-menu')?.classList.toggle('show');
+    });
+
   } else {
     nav.innerHTML = `
       <a href="../authentication/login.html"><button class="btn">Log in</button></a>

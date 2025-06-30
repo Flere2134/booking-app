@@ -18,6 +18,9 @@ firebase.auth().onAuthStateChanged(async (user) => {
         window.location.href = "../dashboard/dashboard.html";
       });
     });
+    document.querySelector('.dropdown-toggle')?.addEventListener('click', () => {
+      document.querySelector('.dropdown-menu')?.classList.toggle('show');
+    });
 
     loadUserBookings(user.uid);
   } else {

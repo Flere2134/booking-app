@@ -184,7 +184,7 @@ nav {
   background-color: #f0f0f0;
 }
 
-.user-dropdown:hover .dropdown-menu {
+.dropdown-menu.show {
   display: block;
 }
 
