@@ -29,6 +29,63 @@ window.onload = () => {
   });
 };
 
+// Toast notification system
+function showToast(message, type = 'info', title = '', duration = 4000) {
+  const toastContainer = document.getElementById('toastContainer');
+  const toastId = 'toast-' + Date.now();
+  
+  const iconMap = {
+    success: 'bx-check-circle',
+    error: 'bx-x-circle',
+    warning: 'bx-error-circle',
+    info: 'bx-info-circle'
+  };
+  
+  const titleMap = {
+    success: title || 'Success',
+    error: title || 'Error',
+    warning: title || 'Warning',
+    info: title || 'Info'
+  };
+  
+  const toast = document.createElement('div');
+  toast.id = toastId;
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `
+    <i class="bx ${iconMap[type]}"></i>
+    <div class="toast-content">
+      <div class="toast-title">${titleMap[type]}</div>
+      <div class="toast-message">${message}</div>
+    </div>
+    <button class="toast-close" onclick="closeToast('${toastId}')">
+      <i class="bx bx-x"></i>
+    </button>
+    <div class="toast-progress"></div>
+  `;
+  
+  toastContainer.appendChild(toast);
+  
+  // Trigger animation
+  setTimeout(() => {
+    toast.classList.add('show');
+  }, 100);
+  
+  // Auto remove
+  setTimeout(() => {
+    closeToast(toastId);
+  }, duration);
+}
+
+function closeToast(toastId) {
+  const toast = document.getElementById(toastId);
+  if (toast) {
+    toast.classList.remove('show');
+    setTimeout(() => {
+      toast.remove();
+    }, 300);
+  }
+}
+
 let selectedRide = null;
 let currentBookingId = null;
 let currentDistance = 0;
@@ -254,33 +311,150 @@ async function calculateRoute(pickupCoords, dropoffCoords) {
   }
 }
 
-// Calculate price based on distance and vehicle type
-function calculatePrice(distance, baseRate) {
-  const minimumFare = 150; // Minimum fare in PHP
-  const baseFare = 100; // Base fare in PHP
-  const calculatedFare = baseFare + (distance * baseRate);
-  return Math.max(minimumFare, Math.round(calculatedFare));
+// Province-based pricing configuration
+const provincePricing = {
+  'L300': {
+    'metro manila': 3000,
+    'cavite': 3200,
+    'rizal': 3200,
+    'laguna': 3500,
+    'batangas': 3500,
+    'bulacan': 3500,
+    'pampanga': 4500,
+    'quezon': 4500,
+    'bataan': 5500,
+    'pangasinan': 5500,
+    'zambales': 5500,
+    'tarlac': 5500,
+    'nueva ecija': 5500,
+    'baguio': 7000,
+    'la union': 7000,
+    'bicol': 8500,
+    'ilocos': 8500,
+    'tuguegarao': 8500,
+    'isabela': 8500
+  },
+  'Grandia Van': {
+    'metro manila': 4000,
+    'cavite': 4200,
+    'rizal': 4200,
+    'laguna': 4500,
+    'batangas': 4500,
+    'bulacan': 4500,
+    'pampanga': 5500,
+    'quezon': 5500,
+    'bataan': 6500,
+    'pangasinan': 6500,
+    'zambales': 6500,
+    'tarlac': 6500,
+    'nueva ecija': 6500,
+    'baguio': 8000,
+    'la union': 8000,
+    'bicol': 9500,
+    'ilocos': 9500,
+    'tuguegarao': 9500,
+    'isabela': 9500
+  },
+  '10-Wheeler Truck': {
+    'metro manila': 5000,
+    'cavite': 7000,
+    'rizal': 7000,
+    'laguna': 8000,
+    'batangas': 8000,
+    'bulacan': 8000,
+    'pampanga': 9500,
+    'quezon': 9500,
+    'bataan': 12000,
+    'pangasinan': 12000,
+    'zambales': 12000,
+    'tarlac': 12000,
+    'nueva ecija': 12000,
+    'baguio': 17000,
+    'la union': 17000,
+    'bicol': 20500,
+    'ilocos': 20500,
+    'tuguegarao': 20500,
+    'isabela': 20500
+  }
+};
+
+// Metro Manila cities/areas
+const metroManilaCities = [
+  'manila', 'quezon city', 'makati', 'pasig', 'taguig', 'parañaque', 'las piñas',
+  'muntinlupa', 'marikina', 'pasay', 'caloocan', 'malabon', 'navotas', 'valenzuela',
+  'san juan', 'mandaluyong', 'pateros'
+];
+
+// Extract province from location address
+function extractProvince(locationAddress) {
+  const address = locationAddress.toLowerCase();
+  
+  // Check for Metro Manila cities first
+  for (const city of metroManilaCities) {
+    if (address.includes(city)) {
+      return 'metro manila';
+    }
+  }
+  
+  // Special case for Quezon - check if it's Quezon City (Metro Manila) or Quezon Province
+  if (address.includes('quezon')) {
+    if (address.includes('quezon city') || address.includes('qc')) {
+      return 'metro manila';
+    }
+    return 'quezon';
+  }
+  
+  // Check for other provinces
+  const provinces = [
+    'cavite', 'rizal', 'laguna', 'batangas', 'bulacan', 'pampanga',
+    'bataan', 'pangasinan', 'zambales', 'tarlac', 'nueva ecija',
+    'baguio', 'la union', 'bicol', 'ilocos', 'tuguegarao', 'isabela'
+  ];
+  
+  for (const province of provinces) {
+    if (address.includes(province)) {
+      return province;
+    }
+  }
+  
+  // Default to Metro Manila if province not found
+  return 'metro manila';
 }
 
-// Update vehicle prices
-function updateVehiclePrices(distance) {
+// Calculate price based on province and vehicle type
+function calculatePrice(vehicleType, province) {
+  const baseRate = provincePricing[vehicleType][province] || provincePricing[vehicleType]['metro manila'];
+  const additionalHourlyRate = 250; // ₱250 per hour after 10 hours
+  
+  // Base price for first 10 hours
+  return {
+    basePrice: baseRate,
+    additionalHourlyRate: additionalHourlyRate,
+    note: 'First 10 hours. ₱250/hour thereafter. Gas and toll fees not included.'
+  };
+}
+
+// Update vehicle prices based on destination province
+function updateVehiclePrices(dropoffAddress) {
+  const province = extractProvince(dropoffAddress);
   const vehicles = [
-    { id: 'l300Price', type: 'L300', rate: 30 },
-    { id: 'grandiaPrice', type: 'Grandia Van', rate: 40 },
-    { id: 'truckPrice', type: '10-Wheeler Truck', rate: 60 }
+    { id: 'l300Price', type: 'L300' },
+    { id: 'grandiaPrice', type: 'Grandia Van' },
+    { id: 'truckPrice', type: '10-Wheeler Truck' }
   ];
 
   vehicles.forEach(vehicle => {
-    const price = calculatePrice(distance, vehicle.rate);
+    const priceInfo = calculatePrice(vehicle.type, province);
     const priceElement = document.getElementById(vehicle.id);
     if (priceElement) {
-      priceElement.textContent = `₱${price}`;
+      priceElement.innerHTML = `₱${priceInfo.basePrice.toLocaleString()}<br><small style="font-size: 0.7rem; color: #666;">${priceInfo.note}</small>`;
     }
     
     // Update data-price attribute for the vehicle option
     const vehicleOption = document.querySelector(`.vehicle-option[data-type="${vehicle.type}"]`);
     if (vehicleOption) {
-      vehicleOption.setAttribute('data-price', price);
+      vehicleOption.setAttribute('data-price', priceInfo.basePrice);
+      vehicleOption.setAttribute('data-province', province);
     }
   });
 }
@@ -295,14 +469,14 @@ async function showRideSelection() {
   const phoneNumber = document.getElementById("phone-number").value.trim();
 
   if (!pickup || !dropoff || !date || !time || !contactPerson || !phoneNumber) {
-    alert("Please fill in all booking details including contact information.");
+    showToast("Please fill in all booking details including contact information.", "warning", "Missing Information");
     return;
   }
 
   // Validate phone number format (basic validation)
   const phonePattern = /^[\+]?[0-9\s\-\(\)]+$/;
   if (!phonePattern.test(phoneNumber)) {
-    alert("Please enter a valid phone number.");
+    showToast("Please enter a valid phone number.", "error", "Invalid Phone Number");
     return;
   }
 
@@ -311,7 +485,7 @@ async function showRideSelection() {
   const threeHoursFromNow = new Date(now.getTime() + 3 * 60 * 60 * 1000);
 
   if (bookingDateTime < threeHoursFromNow && bookingDateTime.toDateString() === now.toDateString()) {
-    alert("Bookings must be at least 3 hours from now.");
+    showToast("Bookings must be at least 3 hours from now.", "warning", "Invalid Time");
     return;
   }
 
@@ -344,15 +518,15 @@ async function showRideSelection() {
     document.getElementById("durationValue").textContent = `${Math.round(route.duration)} minutes`;
     document.getElementById("distanceInfo").style.display = "block";
     
-    // Update vehicle prices based on distance
-    updateVehiclePrices(route.distance);
+    // Update vehicle prices based on destination province
+    updateVehiclePrices(dropoff);
     
     // Reset button
     findRidesBtn.innerHTML = originalText;
     findRidesBtn.disabled = false;
     
   } catch (error) {
-    alert("Unable to calculate route. Please check your addresses and try again.");
+    showToast("Unable to calculate route. Please check your addresses and try again.", "error", "Route Calculation Failed");
     findRidesBtn.innerHTML = originalText;
     findRidesBtn.disabled = false;
     return;
@@ -360,13 +534,14 @@ async function showRideSelection() {
 
   firebase.auth().onAuthStateChanged(async (user) => {
     if (!user) {
-      alert("Please log in to continue.");
+      showToast("Please log in to continue.", "warning", "Authentication Required");
       return;
     }
 
     const db = firebase.firestore();
 
     try {
+      const province = extractProvince(dropoff);
       const docRef = await db.collection("bookings").add({
         userId: user.uid,
         pickup,
@@ -377,6 +552,7 @@ async function showRideSelection() {
         phoneNumber,
         distance: currentDistance,
         duration: currentDuration,
+        province: province,
         status: "in_progress",
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
@@ -387,11 +563,11 @@ async function showRideSelection() {
       document.getElementById("confirmBooking").disabled = false;
       
       // Show success message
-      alert("Trip details saved! Please select your ride and confirm booking.");
+      showToast("Trip details saved! Please select your ride and confirm booking.", "success", "Trip Saved");
       
     } catch (error) {
       console.error("Error creating booking:", error);
-      alert("Booking failed. Try again.");
+      showToast("Booking failed. Please try again.", "error", "Booking Error");
     }
   });
 }
@@ -424,18 +600,18 @@ function initializeRideSelection() {
   
   document.getElementById("confirmBooking").addEventListener("click", async () => {
     if (!selectedRide) {
-      alert("Please select a ride option.");
+      showToast("Please select a ride option.", "warning", "No Vehicle Selected");
       return;
     }
 
     const user = firebase.auth().currentUser;
     if (!user) {
-      alert("You must be logged in to confirm booking.");
+      showToast("You must be logged in to confirm booking.", "warning", "Authentication Required");
       return;
     }
 
     if (!currentBookingId) {
-      alert("No booking found to confirm.");
+      showToast("No booking found to confirm.", "error", "Booking Error");
       return;
     }
 
@@ -448,12 +624,14 @@ function initializeRideSelection() {
         status: "pending"
       });
       
-      alert("Booking confirmed successfully!");
-      window.location.href = "../activity/activity.html";
+      showToast("Booking confirmed successfully! Redirecting to activity page...", "success", "Booking Confirmed");
+      setTimeout(() => {
+        window.location.href = "../activity/activity.html";
+      }, 2000);
 
     } catch (error) {
       console.error("Booking update failed:", error);
-      alert("Something went wrong. Please try again.");
+      showToast("Something went wrong. Please try again.", "error", "Update Failed");
     }
   });
 }
@@ -481,9 +659,9 @@ function validateFormFields() {
 
 // Reset prices when inputs change
 function resetPrices() {
-  document.getElementById("l300Price").textContent = "Enter route";
-  document.getElementById("grandiaPrice").textContent = "Enter route";
-  document.getElementById("truckPrice").textContent = "Enter route";
+  document.getElementById("l300Price").innerHTML = "Select destination";
+  document.getElementById("grandiaPrice").innerHTML = "Select destination";
+  document.getElementById("truckPrice").innerHTML = "Select destination";
   document.getElementById("distanceInfo").style.display = "none";
   currentDistance = 0;
   currentDuration = 0;

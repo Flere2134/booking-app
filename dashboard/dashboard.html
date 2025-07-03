@@ -46,29 +46,25 @@
           <div class="card-body">
             <div class="input-group">
               <label for="pickup">From</label>
-              <div class="input-wrapper autocomplete-wrapper">
+              <div class="input-wrapper">
                 <i class="bx bx-current-location"></i>
                 <input
                   type="text"
                   id="pickup"
-                  placeholder="Search pickup location..."
-                  autocomplete="off"
+                  placeholder="Enter pickup location"
                 />
-                <div class="autocomplete-dropdown" id="pickupDropdown"></div>
               </div>
             </div>
 
             <div class="input-group">
               <label for="dropoff">To</label>
-              <div class="input-wrapper autocomplete-wrapper">
+              <div class="input-wrapper">
                 <i class="bx bx-map-pin"></i>
                 <input
                   type="text"
                   id="dropoff"
-                  placeholder="Search destination..."
-                  autocomplete="off"
+                  placeholder="Enter destination"
                 />
-                <div class="autocomplete-dropdown" id="dropoffDropdown"></div>
               </div>
             </div>
 
@@ -100,32 +96,6 @@
               </div>
             </div>
 
-            <div class="contact-grid">
-              <div class="input-group">
-                <label for="contact-person">Contact Person</label>
-                <div class="input-wrapper">
-                  <i class="bx bx-user"></i>
-                  <input
-                    type="text"
-                    id="contact-person"
-                    placeholder="Enter contact person name"
-                  />
-                </div>
-              </div>
-
-              <div class="input-group">
-                <label for="phone-number">Phone Number</label>
-                <div class="input-wrapper">
-                  <i class="bx bx-phone"></i>
-                  <input
-                    type="tel"
-                    id="phone-number"
-                    placeholder="Enter phone number"
-                  />
-                </div>
-              </div>
-            </div>
-
             <button
               class="btn-primary"
               id="seePricesBtn"
@@ -143,53 +113,43 @@
             <h2><i class="bx bx-car"></i> Choose Your Vehicle</h2>
           </div>
           <div class="card-body">
-            <div class="distance-info" id="distanceInfo" style="display: none;">
-              <div class="distance-card">
-                <i class="bx bx-map"></i>
-                <div class="distance-details">
-                  <span class="distance-text">Distance: <strong id="distanceValue">-</strong></span>
-                  <span class="duration-text">Estimated time: <strong id="durationValue">-</strong></span>
-                </div>
-              </div>
-            </div>
-
-            <div class="vehicle-grid" id="vehicleGrid">
-              <div class="vehicle-option" data-type="L300" data-base-rate="30">
+            <div class="vehicle-grid">
+              <div class="vehicle-option" data-type="Sedan" data-price="1500">
                 <div class="vehicle-icon">
                   <i class="bx bx-car"></i>
                 </div>
                 <div class="vehicle-info">
-                  <h3>L300</h3>
-                  <span class="capacity">8 passengers</span>
-                  <div class="price" id="l300Price">Calculating...</div>
+                  <h3>Sedan</h3>
+                  <span class="capacity">4 passengers</span>
+                  <div class="price">₱1,500</div>
                 </div>
                 <div class="select-indicator">
                   <i class="bx bx-check-circle"></i>
                 </div>
               </div>
 
-              <div class="vehicle-option" data-type="Grandia Van" data-base-rate="40">
+              <div class="vehicle-option" data-type="SUV" data-price="2000">
+                <div class="vehicle-icon">
+                  <i class="bx bxs-car"></i>
+                </div>
+                <div class="vehicle-info">
+                  <h3>SUV</h3>
+                  <span class="capacity">6 passengers</span>
+                  <div class="price">₱2,000</div>
+                </div>
+                <div class="select-indicator">
+                  <i class="bx bx-check-circle"></i>
+                </div>
+              </div>
+
+              <div class="vehicle-option" data-type="Van" data-price="2500">
                 <div class="vehicle-icon">
                   <i class="bx bx-bus"></i>
                 </div>
                 <div class="vehicle-info">
-                  <h3>Grandia Van</h3>
-                  <span class="capacity">12 passengers</span>
-                  <div class="price" id="grandiaPrice">Calculating...</div>
-                </div>
-                <div class="select-indicator">
-                  <i class="bx bx-check-circle"></i>
-                </div>
-              </div>
-
-              <div class="vehicle-option" data-type="10-Wheeler Truck" data-base-rate="60">
-                <div class="vehicle-icon">
-                  <i class="bx bx-truck"></i>
-                </div>
-                <div class="vehicle-info">
-                  <h3>10-Wheeler Truck</h3>
-                  <span class="capacity cargo-only">Cargo only</span>
-                  <div class="price" id="truckPrice">Calculating...</div>
+                  <h3>Van</h3>
+                  <span class="capacity">10 passengers</span>
+                  <div class="price">₱2,500</div>
                 </div>
                 <div class="select-indicator">
                   <i class="bx bx-check-circle"></i>
