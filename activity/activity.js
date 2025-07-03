@@ -49,14 +49,34 @@ async function loadUserBookings(uid) {
 
     snapshot.forEach(doc => {
       const data = doc.data();
-      const isCompleted = data.status === "completed";
+      
+      // Determine status class and text
+      let statusClass, statusText;
+      switch(data.status) {
+        case "accepted":
+          statusClass = "accepted";
+          statusText = "ACCEPTED";
+          break;
+        case "rejected":
+          statusClass = "rejected";
+          statusText = "REJECTED";
+          break;
+        case "pending":
+          statusClass = "pending";
+          statusText = "PENDING";
+          break;
+        default:
+          statusClass = "pending";
+          statusText = "PENDING";
+          break;
+      }
 
       const card = document.createElement("div");
       card.className = "booking-card";
 
       card.innerHTML = `
-        <span class="booking-status ${isCompleted ? 'completed' : 'current'}">
-          ${isCompleted ? "COMPLETED" : "CURRENT"}
+        <span class="booking-status ${statusClass}">
+          ${statusText}
         </span>
         <div class="booking-grid">
           <div class="left-col">

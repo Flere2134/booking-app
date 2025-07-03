@@ -4,6 +4,7 @@
   --accent-color: #3A7CA5;
   --green: #4CAF50;
   --blue: #2196F3;
+  --red: #F44336;
 }
 
 body {
@@ -115,12 +116,16 @@ h1 {
   color: white;
 }
 
-.booking-status.current {
+.booking-status.pending {
   background-color: var(--blue);
 }
 
-.booking-status.completed {
+.booking-status.accepted {
   background-color: var(--green);
+}
+
+.booking-status.rejected {
+  background-color: var(--red);
 }
 
 .booking-card p {
