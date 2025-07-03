@@ -1,0 +1,189 @@
+:root {
+  --bg-color: #FFF9ED;
+  --text-color: #1C1C1A;
+  --accent-color: #3A7CA5;
+  --green: #4CAF50;
+  --blue: #2196F3;
+  --red: #F44336;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  padding-top: 80px;
+}
+
+/* Header */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--text-color);
+  color: var(--bg-color);
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--bg-color);
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  color: var(--accent-color);
+}
+
+.nav-text-link {
+  color: var(--bg-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: color 0.2s ease;
+}
+
+.nav-text-link:hover {
+  color: var(--accent-color);
+}
+
+.btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 20px;
+  background-color: var(--text-color);
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn:hover {
+  background-color: var(--accent-color);
+  color: #fff;
+}
+
+.activity-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.booking-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  position: relative;
+}
+
+.booking-status {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  color: white;
+}
+
+.booking-status.pending {
+  background-color: var(--blue);
+}
+
+.booking-status.accepted {
+  background-color: var(--green);
+}
+
+.booking-status.rejected {
+  background-color: var(--red);
+}
+
+.booking-card p {
+  margin: 0.4rem 0;
+  line-height: 1.6;
+}
+
+.booking-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.left-col, .right-col {
+  flex: 1;
+  min-width: 150px;
+}
+
+.user-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  cursor: pointer;
+  background-color: var(--text-color);
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 1;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 12px 16px;
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown-menu.show {
+  display: block;
+}

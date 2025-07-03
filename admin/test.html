@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Test</title>
+</head>
+<body>
+  <h1>Firebase Test</h1>
+  <div id="status">Loading...</div>
+  <div id="console-output"></div>
+
+  <!-- Firebase CDN with compat mode -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
+
+  <script>
+    // Override console.log to show on page
+    const originalConsoleLog = console.log;
+    const originalConsoleError = console.error;
+    const consoleOutput = document.getElementById('console-output');
+    
+    function addToConsole(message, type = 'log') {
+      const div = document.createElement('div');
+      div.style.color = type === 'error' ? 'red' : 'black';
+      div.textContent = `[${type.toUpperCase()}] ${message}`;
+      consoleOutput.appendChild(div);
+    }
+    
+    console.log = function(...args) {
+      originalConsoleLog.apply(console, args);
+      addToConsole(args.join(' '), 'log');
+    };
+    
+    console.error = function(...args) {
+      originalConsoleError.apply(console, args);
+      addToConsole(args.join(' '), 'error');
+    };
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAhiU_vFXznLI-dDGIWKXKsJtldxD4z940",
+      authDomain: "booking-app-a81ec.firebaseapp.com",
+      projectId: "booking-app-a81ec",
+      storageBucket: "booking-app-a81ec.firebasestorage.app",
+      messagingSenderId: "905587671438",
+      appId: "1:905587671438:web:c7ad2eb82f7f5003aee4df"
+    };
+
+    // Test Firebase loading
+    document.addEventListener('DOMContentLoaded', function() {
+      const statusDiv = document.getElementById('status');
+      
+      console.log('DOM loaded');
+      console.log('typeof firebase:', typeof firebase);
+      
+      if (typeof firebase === 'undefined') {
+        statusDiv.textContent = 'ERROR: Firebase not loaded';
+        console.error('Firebase is not loaded');
+        return;
+      }
+      
+      console.log('Firebase object exists:', !!firebase);
+      console.log('Firebase.apps:', firebase.apps);
+      
+      try {
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+          console.log('Initializing Firebase...');
+          firebase.initializeApp(firebaseConfig);
+          console.log('Firebase initialized successfully');
+        }
+        
+        // Test Firestore
+        console.log('Testing Firestore...');
+        const db = firebase.firestore();
+        console.log('Firestore instance created:', !!db);
+        
+        // Test Auth
+        console.log('Testing Auth...');
+        const auth = firebase.auth();
+        console.log('Auth instance created:', !!auth);
+        
+        statusDiv.textContent = 'SUCCESS: Firebase is working!';
+        statusDiv.style.color = 'green';
+        
+        // Test a simple Firestore query
+        console.log('Testing Firestore query...');
+        db.collection('bookings').limit(1).get()
+          .then(snapshot => {
+            console.log('Query successful, size:', snapshot.size);
+          })
+          .catch(error => {
+            console.error('Query failed:', error.message);
+          });
+        
+      } catch (error) {
+        console.error('Error initializing Firebase:', error);
+        statusDiv.textContent = 'ERROR: ' + error.message;
+        statusDiv.style.color = 'red';
+      }
+    });
+  </script>
+</body>
+</html>

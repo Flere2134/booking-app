@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ADMIN - LAZCIS</title>
+  <link rel="icon" href="../LAZCIS_logo.png">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+  <nav>
+    <div class="logo">LAZCIS ADMIN</div>
+    <div class="nav-links" id="navLinks">
+      <!-- Populated dynamically -->
+    </div>
+  </nav>
+
+  <main class="admin-container">
+    <h1>BOOKING MANAGEMENT</h1>
+    
+    <div class="sorting-controls">
+      <h3>Sort Bookings</h3>
+      <div class="sort-options">
+        <select id="sortBy">
+          <option value="createdAt">Creation Date</option>
+          <option value="bookingDate">Booking Date</option>
+          <option value="status">Status</option>
+          <option value="userId">User ID</option>
+        </select>
+        <select id="sortOrder">
+          <option value="desc">Newest First</option>
+          <option value="asc">Oldest First</option>
+        </select>
+        <button id="applySortBtn" class="btn">Apply Sort</button>
+      </div>
+      
+      <div class="filter-options">
+        <h4>Filter by Status</h4>
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-status="all">All</button>
+          <button class="filter-btn" data-status="pending">Pending</button>
+          <button class="filter-btn" data-status="accepted">Accepted</button>
+          <button class="filter-btn" data-status="rejected">Rejected</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="stats-container">
+      <div class="stat-card">
+        <h3>Pending Bookings</h3>
+        <span id="pendingCount">-</span>
+      </div>
+      <div class="stat-card">
+        <h3>Accepted Bookings</h3>
+        <span id="acceptedCount">-</span>
+      </div>
+      <div class="stat-card">
+        <h3>Total Bookings</h3>
+        <span id="totalCount">-</span>
+      </div>
+    </div>
+
+    <div class="bookings-header">
+      <h2>Bookings <span id="bookingCount" class="booking-count"></span></h2>
+    </div>
+    
+    <div id="bookingsList" class="bookings-list">
+      <!-- Bookings will render here -->
+    </div>
+  </main>
+
+  <!-- Firebase CDN with compat mode -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
+  
+  <script src="admin.js"></script>
+</body>
+</html>

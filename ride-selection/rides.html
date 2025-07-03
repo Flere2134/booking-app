@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Select Your Ride - LAZCIS</title>
+  <link rel="icon" href="../LAZCIS_logo.png">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="rides.css" />
+</head>
+<body>
+  <nav>
+    <div class="logo">LAZCIS</div>
+    <div class="nav-links" id="navLinks">
+      <!--moved to rides.js-->>
+      <button class="btn">Sign up</button>
+    </div>
+  </nav>
+
+  <main class="ride-selection-container">
+    <div class="left-info">
+      <h2>Booking Details</h2>
+      <p><strong>Pickup:</strong> <span id="pickupDisplay"></span></p>
+      <p><strong>Dropoff:</strong> <span id="dropoffDisplay"></span></p>
+      <p><strong>Date:</strong> <span id="dateDisplay"></span></p>
+      <p><strong>Time:</strong> <span id="timeDisplay"></span></p>
+    </div>
+
+    <div class="right-options">
+      <h2>Choose a RIDE</h2>
+      <div class="ride-option" data-type="Sedan" data-price="1500">
+        <i class='bx bx-car'></i>
+        <div>
+          <h3>Sedan (4-seater)</h3>
+          <p>₱1,500</p>
+        </div>
+      </div>
+      <div class="ride-option" data-type="SUV" data-price="2000">
+        <i class='bx bxs-car'></i>
+        <div>
+          <h3>SUV (6-seater)</h3>
+          <p>₱2,000</p>
+        </div>
+      </div>
+      <div class="ride-option" data-type="Van" data-price="2500">
+        <i class='bx bx-bus'></i>
+        <div>
+          <h3>Van (10-seater)</h3>
+          <p>₱2,500</p>
+        </div>
+      </div>
+
+      <h3 class="payment-label">PAYMENT METHOD</h3>
+      <select id="paymentMethod">
+        <option value="Cash">💵 Cash</option>
+        <option value="Card">💳 Credit/Debit Card</option>
+      </select>
+
+      <button id="confirmBooking" class="btn confirm-btn">Confirm Booking</button>
+    </div>
+  </main>
+
+    <!-- Firebase CDN with compat mode (UMD bundle for browsers) -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAhiU_vFXznLI-dDGIWKXKsJtldxD4z940",
+      authDomain: "booking-app-a81ec.firebaseapp.com",
+      projectId: "booking-app-a81ec",
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+
+  <script src="rides.js"></script>
+</body>
+</html>
