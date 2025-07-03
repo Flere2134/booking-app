@@ -1,62 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>LAZCIS</title>
-  <link rel="icon" href="../LAZCIS_logo.png">
-  <link rel="stylesheet" href="dashboard.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LAZCIS Transport Services - Book Your Ride</title>
+    <link rel="icon" href="lazcis-logo.jpg" type="image/jpeg" />
+    <link rel="stylesheet" href="dashboard-modern.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="logo">
+        <img
+          src="lazcis-logo.jpg"
+          alt="LAZCIS logo"
+          style="
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            object-fit: contain;
+          "
+        />
+        LAZCIS TRANSPORT SERVICES
+      </div>
+      <div class="nav-links" id="navLinks">
+        <a href="../index.html" class="nav-text-link">Back to Home</a>
+        <!--moves in JS script-->
+      </div>
+    </nav>
 
-</head>
-<body>
+    <div class="booking-container">
+      <div class="booking-grid">
+        <!-- Trip Details Card -->
+        <div class="card trip-card">
+          <div class="card-header">
+            <h2><i class="bx bx-map-alt"></i> Trip Details</h2>
+          </div>
+          <div class="card-body">
+            <div class="input-group">
+              <label for="pickup">From</label>
+              <div class="input-wrapper">
+                <i class="bx bx-current-location"></i>
+                <input
+                  type="text"
+                  id="pickup"
+                  placeholder="Enter pickup location"
+                />
+              </div>
+            </div>
 
-  <nav>
-    <div class="logo">LAZCIS</div>
-    <div class="nav-links" id="navLinks">
-      <!--moves in JS script-->
-    </div>
-  </nav>
+            <div class="input-group">
+              <label for="dropoff">To</label>
+              <div class="input-wrapper">
+                <i class="bx bx-map-pin"></i>
+                <input
+                  type="text"
+                  id="dropoff"
+                  placeholder="Enter destination"
+                />
+              </div>
+            </div>
 
-  <section class="dashboard">
-    <div class="left-content">
-      <h1>Go anywhere with LAZCIS</h1>
-      <div class="form-group">
-        <div class="input-wrapper">
-          <i class='bx bx-map'></i>
-          <input type="text" id="pickup" placeholder="Pickup location" />
+            <div class="datetime-grid">
+              <div class="input-group">
+                <label for="booking-date">Date</label>
+                <div class="input-wrapper">
+                  <i class="bx bx-calendar"></i>
+                  <input
+                    type="text"
+                    id="booking-date"
+                    placeholder="Select date"
+                    readonly
+                  />
+                </div>
+              </div>
+
+              <div class="input-group">
+                <label for="booking-time">Time</label>
+                <div class="input-wrapper">
+                  <i class="bx bx-time"></i>
+                  <input
+                    type="text"
+                    id="booking-time"
+                    placeholder="Select time"
+                    readonly
+                  />
+                </div>
+              </div>
+            </div>
+
+            <button
+              class="btn-primary"
+              id="seePricesBtn"
+              onclick="showRideSelection()"
+              disabled
+            >
+              <i class="bx bx-search"></i> Find Rides
+            </button>
+          </div>
         </div>
-        <div class="input-wrapper">
-          <i class='bx bx-map-pin'></i>
-          <input type="text" id="dropoff" placeholder="Dropoff location" />
-        </div>
-        <div class="input-wrapper">
-          <i class='bx bx-calendar'></i>
-          <input type="text" id="booking-date" placeholder="Select date" readonly>
-        </div>
-        <div class="input-wrapper">
-          <i class='bx bx-time'></i>
-          <input type="text" id="booking-time" placeholder="Select time" readonly>
+
+        <!-- Vehicle Selection Card -->
+        <div class="card vehicle-card">
+          <div class="card-header">
+            <h2><i class="bx bx-car"></i> Choose Your Vehicle</h2>
+          </div>
+          <div class="card-body">
+            <div class="distance-info" id="distanceInfo" style="display: none;">
+              <div class="distance-card">
+                <i class="bx bx-map"></i>
+                <div class="distance-details">
+                  <span class="distance-text">Distance: <strong id="distanceValue">-</strong></span>
+                  <span class="duration-text">Estimated time: <strong id="durationValue">-</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="vehicle-grid" id="vehicleGrid">
+              <div class="vehicle-option" data-type="Sedan" data-base-rate="25">
+                <div class="vehicle-icon">
+                  <i class="bx bx-car"></i>
+                </div>
+                <div class="vehicle-info">
+                  <h3>Sedan</h3>
+                  <span class="capacity">4 passengers</span>
+                  <div class="price" id="sedanPrice">Calculating...</div>
+                </div>
+                <div class="select-indicator">
+                  <i class="bx bx-check-circle"></i>
+                </div>
+              </div>
+
+              <div class="vehicle-option" data-type="SUV" data-base-rate="35">
+                <div class="vehicle-icon">
+                  <i class="bx bxs-car"></i>
+                </div>
+                <div class="vehicle-info">
+                  <h3>SUV</h3>
+                  <span class="capacity">6 passengers</span>
+                  <div class="price" id="suvPrice">Calculating...</div>
+                </div>
+                <div class="select-indicator">
+                  <i class="bx bx-check-circle"></i>
+                </div>
+              </div>
+
+              <div class="vehicle-option" data-type="Van" data-base-rate="45">
+                <div class="vehicle-icon">
+                  <i class="bx bx-bus"></i>
+                </div>
+                <div class="vehicle-info">
+                  <h3>Van</h3>
+                  <span class="capacity">10 passengers</span>
+                  <div class="price" id="vanPrice">Calculating...</div>
+                </div>
+                <div class="select-indicator">
+                  <i class="bx bx-check-circle"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-section">
+              <label for="paymentMethod">Payment Method</label>
+              <div class="select-wrapper">
+                <select id="paymentMethod">
+                  <option value="Cash">💵 Cash Payment</option>
+                  <option value="Card">💳 Card Payment</option>
+                </select>
+                <i class="bx bx-chevron-down"></i>
+              </div>
+            </div>
+
+            <button id="confirmBooking" class="btn-secondary" disabled>
+              <i class="bx bx-check"></i> Confirm Booking
+            </button>
+          </div>
         </div>
       </div>
-      <div class="action-buttons">
-        <button class="btn" id="seePricesBtn" onclick="seePrices()" disabled>Book Today!</button>
-      </div>
     </div>
 
-    <div class="right-content">
-      <img src="baguio_scenery.png" alt="Family with car illustration" />
-    </div>
-  </section>
+    <!-- Firebase CDN with compat mode (UMD bundle for browsers) -->
+    <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
 
-  <!-- Firebase CDN with compat mode (UMD bundle for browsers) -->
-  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
-  
-  <script src="../firebase-init.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="dashboard.js"></script>
-</body>
+    <script src="../firebase-init.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="dashboard.js"></script>
+  </body>
 </html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lazcis Transport Services - Professional Services & Delivery</title>
+    <link rel="icon" href="lazcis-logo.jpg" type="image/x-icon" />
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <img src="lazcis-logo.jpg" alt="LAZCIS logo">
+                </div>
+                LAZCIS TRANSPORT SERVICES
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <button class="login-btn" onclick="openModal('login')">Login</button>
+                <button class="register-btn" onclick="openModal('register')">Register</button>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-overlay"></div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>BEYOND THE MILE<br>DELIVERING EXCELLENCE</h1>
+                <p>Safe and efficient transportation services you can trust. Professional cargo and personal delivery services nationwide.</p>
+                <div class="hero-buttons">
+                    <button class="primary-button" onclick="window.location.href='dashboard/dashboard.html'">GET A QUOTE</button>
+                    <a href="#services" class="secondary-button">View Services</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="L300.png" alt="L300">
+            </div>
+        </div>
+    </section>
+
+    <section class="trust-section">
+        <div class="trust-container">
+            <div class="trust-stats">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Happy Customers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">99%</div>
+                    <div class="stat-label">On-Time Delivery</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">5★</div>
+                    <div class="stat-label">Customer Rating</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Support Available</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="features-container">
+            <div class="section-header">
+                <h2>Why Choose Lazcis Transport?</h2>
+                <p>We combine years of experience with modern technology to provide unmatched transportation services</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Experienced Drivers</h3>
+                    <p>Our professional drivers are carefully selected and trained to provide safe, reliable transportation services with years of experience.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Cargo Security</h3>
+                    <p>We prioritize the safety and security of your cargo during transit with comprehensive insurance and secure handling procedures.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Nationwide Coverage</h3>
+                    <p>Complete nationwide coverage with real-time tracking and delivery confirmation. We deliver wherever you need us.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <div class="services-container">
+            <div class="section-header">
+                <h2>Service Types</h2>
+                <p>Comprehensive transportation solutions tailored to your specific needs</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>Cargo</h3>
+                    <p>Ideal for transporting large goods, furniture, appliances, and equipment. Perfect for residential or commercial moves.</p>
+                    <ul class="service-features">
+                        <li>Large goods and furniture transport</li>
+                        <li>Residential and commercial moves</li>
+                        <li>Available in various sizes including truck, van, or FB van depending on your load</li>
+                        <li>Professional handling and secure transport</li>
+                    </ul>
+                    <button class="service-btn" onclick="window.location.href='dashboard/dashboard.html'">Get Quote</button>
+                </div>
+                <div class="service-card">
+                    <h3>Company Service</h3>
+                    <p>Tailored solutions for businesses needing regular logistics or delivery support. Whether you're delivering supplies, products, or documents, we offer reliable service to match your schedule.</p>
+                    <ul class="service-features">
+                        <li>Regular business logistics support</li>
+                        <li>Supply and product delivery</li>
+                        <li>Document delivery services</li>
+                        <li>Flexible scheduling to match business needs</li>
+                    </ul>
+                    <button class="service-btn" onclick="window.location.href='dashboard/dashboard.html'">Get Quote</button>
+                </div>
+                <div class="service-card">
+                    <h3>Personal Service</h3>
+                    <p>For individual needs like house moves, small item deliveries, or special occasions. Let us take the stress out of transporting your personal items—safe, on-time, and hassle-free.</p>
+                    <ul class="service-features">
+                        <li>House moves and personal relocations</li>
+                        <li>Small item and package deliveries</li>
+                        <li>Special occasion transportation</li>
+                        <li>Stress-free personal service</li>
+                    </ul>
+                    <button class="service-btn" onclick="window.location.href='dashboard/dashboard.html'">Get Quote</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section" id="contact">
+        <div class="cta-container">
+            <h2>Ready to Get Started?</h2>
+            <p>Get your free quote today and experience the difference of professional transportation services. No hidden fees, no surprises.</p>
+            <div class="cta-buttons">
+                <button class="primary-button" onclick="window.location.href='dashboard/dashboard.html'">Get Free Quote</button>
+                <a href="tel:+1234567890" class="secondary-button">Call: 8252-4963</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Lazcis Transport Services</h3>
+                    <p>Professional transportation services you can trust. Beyond the mile, delivering excellence.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="#home">Home</a>
+                    <a href="#services">Services</a>
+                    <a href="#about">About Us</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p>Phone: 8252-4963</p>
+                    <p>Email: info@Lazcistransport.com</p>
+                    <p>Available 24/7</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Service Areas</h3>
+                    <p>Nationwide Coverage</p>
+                    <p>Local & Long Distance</p>
+                    <p>Residential & Commercial</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Lazcis Transport Services. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('login')">&times;</span>
+            <h2>Login to Your Account</h2>
+            <form class="auth-form">
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" name="email" required>
+                </div>
+                <div class="form-group"> 
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                </div>
+                <button type="submit" class="auth-submit-btn">Login</button>
+                <p class="auth-switch">Don't have an account? <a href="#" onclick="switchModal('login', 'register')">Register here</a></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('register')">&times;</span>
+            <h2>Create Your Account</h2>
+            <form class="auth-form">
+                <div class="form-group">
+                    <label for="registerName">Full Name:</label>
+                    <input type="text" id="registerName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email:</label>
+                    <input type="email" id="registerEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPhone">Phone:</label>
+                    <input type="tel" id="registerPhone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password:</label>
+                    <input type="password" id="registerPassword" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password:</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+                <button type="submit" class="auth-submit-btn">Register</button>
+                <p class="auth-switch">Already have an account? <a href="#" onclick="switchModal('register', 'login')">Login here</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- <div id="quoteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('quote')">&times;</span>
+            <h2>Get Your Free Quote</h2>
+            <form class="quote-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="quoteName">Full Name:</label>
+                        <input type="text" id="quoteName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="quotePhone">Phone:</label>
+                        <input type="tel" id="quotePhone" name="phone" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="quoteEmail">Email:</label>
+                    <input type="email" id="quoteEmail" name="email" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pickupLocation">Pickup Location:</label>
+                        <input type="text" id="pickupLocation" name="pickup" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="deliveryLocation">Delivery Location:</label>
+                        <input type="text" id="deliveryLocation" name="delivery" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="serviceType">Service Type:</label>
+                    <select id="serviceType" name="serviceType" required>
+                        <option value="">Select Service Type</option>
+                        <option value="cargo">Cargo</option>
+                        <option value="company">Company Service</option>
+                        <option value="personal">Personal Service</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description of Items/Service Needed:</label>
+                    <textarea id="description" name="description" rows="4" placeholder="Please describe what you need to transport..."></textarea>
+                </div>
+                <button type="submit" class="auth-submit-btn">Get Quote</button>
+            </form>
+        </div>
+    </div>  -->
+
+    <script src="script.js"></script>
+</body>
+</html>
