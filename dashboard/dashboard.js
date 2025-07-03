@@ -203,7 +203,13 @@ function initializeAutocomplete(inputId, dropdownId) {
 
     hideDropdown();
     validateFormFields();
-    resetPrices();
+    
+    // Auto-calculate prices when dropoff is selected
+    if (inputId === 'dropoff') {
+      autoCalculatePrices();
+    } else {
+      resetPrices();
+    }
   }
 
   function highlightItem(index) {
@@ -434,6 +440,49 @@ function calculatePrice(vehicleType, province) {
   };
 }
 
+// Auto-calculate prices when dropoff is selected
+async function autoCalculatePrices() {
+  const pickup = document.getElementById("pickup").value.trim();
+  const dropoff = document.getElementById("dropoff").value.trim();
+  
+  if (!pickup || !dropoff) {
+    return;
+  }
+
+  try {
+    // Use stored coordinates if available, otherwise geocode
+    let finalPickupCoords = pickupCoords;
+    let finalDropoffCoords = dropoffCoords;
+    
+    if (!finalPickupCoords && pickup) {
+      finalPickupCoords = await geocodeAddress(pickup);
+    }
+    
+    if (!finalDropoffCoords && dropoff) {
+      finalDropoffCoords = await geocodeAddress(dropoff);
+    }
+    
+    if (finalPickupCoords && finalDropoffCoords) {
+      // Calculate route
+      const route = await calculateRoute(finalPickupCoords, finalDropoffCoords);
+      currentDistance = route.distance;
+      currentDuration = route.duration;
+      
+      // Display distance info
+      document.getElementById("distanceValue").textContent = `${route.distance.toFixed(1)} km`;
+      document.getElementById("distanceInfo").style.display = "block";
+      
+      // Update vehicle prices based on destination province
+      updateVehiclePrices(dropoff);
+    }
+    
+  } catch (error) {
+    console.error('Auto-calculation error:', error);
+    // Fallback to province-based pricing only
+    updateVehiclePrices(dropoff);
+  }
+}
+
 // Update vehicle prices based on destination province
 function updateVehiclePrices(dropoffAddress) {
   const province = extractProvince(dropoffAddress);
@@ -459,8 +508,8 @@ function updateVehiclePrices(dropoffAddress) {
   });
 }
 
-// Show ride selection
-async function showRideSelection() {
+// Create booking when confirm button is clicked
+async function createBooking() {
   const pickup = document.getElementById("pickup").value.trim();
   const dropoff = document.getElementById("dropoff").value.trim();
   const date = document.getElementById("booking-date").value;
@@ -470,14 +519,14 @@ async function showRideSelection() {
 
   if (!pickup || !dropoff || !date || !time || !contactPerson || !phoneNumber) {
     showToast("Please fill in all booking details including contact information.", "warning", "Missing Information");
-    return;
+    return false;
   }
 
   // Validate phone number format (basic validation)
   const phonePattern = /^[\+]?[0-9\s\-\(\)]+$/;
   if (!phonePattern.test(phoneNumber)) {
     showToast("Please enter a valid phone number.", "error", "Invalid Phone Number");
-    return;
+    return false;
   }
 
   const now = new Date();
@@ -486,90 +535,42 @@ async function showRideSelection() {
 
   if (bookingDateTime < threeHoursFromNow && bookingDateTime.toDateString() === now.toDateString()) {
     showToast("Bookings must be at least 3 hours from now.", "warning", "Invalid Time");
-    return;
+    return false;
   }
 
-  // Show loading state
-  const findRidesBtn = document.getElementById("seePricesBtn");
-  const originalText = findRidesBtn.innerHTML;
-  findRidesBtn.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Calculating Route...';
-  findRidesBtn.disabled = true;
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    showToast("Please log in to continue.", "warning", "Authentication Required");
+    return false;
+  }
+
+  const db = firebase.firestore();
 
   try {
-    // Use stored coordinates if available, otherwise geocode
-    let finalPickupCoords = pickupCoords;
-    let finalDropoffCoords = dropoffCoords;
-    
-    if (!finalPickupCoords) {
-      finalPickupCoords = await geocodeAddress(pickup);
-    }
-    
-    if (!finalDropoffCoords) {
-      finalDropoffCoords = await geocodeAddress(dropoff);
-    }
-    
-    // Calculate route
-    const route = await calculateRoute(finalPickupCoords, finalDropoffCoords);
-    currentDistance = route.distance;
-    currentDuration = route.duration;
-    
-    // Display distance info
-    document.getElementById("distanceValue").textContent = `${route.distance.toFixed(1)} km`;
-    document.getElementById("durationValue").textContent = `${Math.round(route.duration)} minutes`;
-    document.getElementById("distanceInfo").style.display = "block";
-    
-    // Update vehicle prices based on destination province
-    updateVehiclePrices(dropoff);
-    
-    // Reset button
-    findRidesBtn.innerHTML = originalText;
-    findRidesBtn.disabled = false;
+    const province = extractProvince(dropoff);
+    const docRef = await db.collection("bookings").add({
+      userId: user.uid,
+      pickup,
+      dropoff,
+      date,
+      time,
+      contactPerson,
+      phoneNumber,
+      distance: currentDistance,
+      duration: currentDuration,
+      province: province,
+      status: "in_progress",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    currentBookingId = docRef.id;
+    return true;
     
   } catch (error) {
-    showToast("Unable to calculate route. Please check your addresses and try again.", "error", "Route Calculation Failed");
-    findRidesBtn.innerHTML = originalText;
-    findRidesBtn.disabled = false;
-    return;
+    console.error("Error creating booking:", error);
+    showToast("Booking failed. Please try again.", "error", "Booking Error");
+    return false;
   }
-
-  firebase.auth().onAuthStateChanged(async (user) => {
-    if (!user) {
-      showToast("Please log in to continue.", "warning", "Authentication Required");
-      return;
-    }
-
-    const db = firebase.firestore();
-
-    try {
-      const province = extractProvince(dropoff);
-      const docRef = await db.collection("bookings").add({
-        userId: user.uid,
-        pickup,
-        dropoff,
-        date,
-        time,
-        contactPerson,
-        phoneNumber,
-        distance: currentDistance,
-        duration: currentDuration,
-        province: province,
-        status: "in_progress",
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-
-      currentBookingId = docRef.id;
-      
-      // Enable the confirm booking button
-      document.getElementById("confirmBooking").disabled = false;
-      
-      // Show success message
-      showToast("Trip details saved! Please select your ride and confirm booking.", "success", "Trip Saved");
-      
-    } catch (error) {
-      console.error("Error creating booking:", error);
-      showToast("Booking failed. Please try again.", "error", "Booking Error");
-    }
-  });
 }
 
 // Initialize ride selection functionality
@@ -604,15 +605,12 @@ function initializeRideSelection() {
       return;
     }
 
-    const user = firebase.auth().currentUser;
-    if (!user) {
-      showToast("You must be logged in to confirm booking.", "warning", "Authentication Required");
-      return;
-    }
-
+    // First create the booking if it doesn't exist
     if (!currentBookingId) {
-      showToast("No booking found to confirm.", "error", "Booking Error");
-      return;
+      const bookingCreated = await createBooking();
+      if (!bookingCreated) {
+        return;
+      }
     }
 
     try {
@@ -643,7 +641,6 @@ const dateInput = document.getElementById("booking-date");
 const timeInput = document.getElementById("booking-time");
 const contactPersonInput = document.getElementById("contact-person");
 const phoneNumberInput = document.getElementById("phone-number");
-const seePricesBtn = document.getElementById("seePricesBtn");
 
 function validateFormFields() {
   const isFilled =
@@ -654,7 +651,11 @@ function validateFormFields() {
     contactPersonInput.value.trim() !== "" &&
     phoneNumberInput.value.trim() !== "";
 
-  seePricesBtn.disabled = !isFilled;
+  // Enable confirm booking button when all fields are filled
+  const confirmBtn = document.getElementById("confirmBooking");
+  if (confirmBtn) {
+    confirmBtn.disabled = !isFilled;
+  }
 }
 
 // Reset prices when inputs change
