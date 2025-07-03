@@ -181,6 +181,10 @@ nav {
   align-items: center;
 }
 
+.autocomplete-wrapper {
+  position: relative;
+}
+
 .input-wrapper i {
   position: absolute;
   left: 1rem;
@@ -209,8 +213,105 @@ nav {
   color: #9ca3af;
 }
 
+/* Autocomplete Dropdown */
+.autocomplete-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 2px solid var(--accent-color);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.autocomplete-dropdown.show {
+  display: block;
+  animation: fadeInDown 0.2s ease;
+}
+
+.autocomplete-item {
+  padding: 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid #f1f3f4;
+  transition: var(--transition);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.autocomplete-item:last-child {
+  border-bottom: none;
+}
+
+.autocomplete-item:hover,
+.autocomplete-item.highlighted {
+  background: linear-gradient(135deg, rgba(58, 124, 165, 0.05) 0%, rgba(58, 124, 165, 0.02) 100%);
+}
+
+.autocomplete-item i {
+  color: var(--accent-color);
+  font-size: 1.1rem;
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.autocomplete-item-content {
+  flex: 1;
+}
+
+.autocomplete-item-title {
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+
+.autocomplete-item-subtitle {
+  color: #666;
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+
+.autocomplete-loading {
+  padding: 1rem;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
+.autocomplete-no-results {
+  padding: 1rem;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* DateTime Grid */
 .datetime-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Contact Grid */
+.contact-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
@@ -410,6 +511,14 @@ nav {
   margin-bottom: 0.5rem;
 }
 
+.vehicle-info .capacity.cargo-only {
+  color: #ff8c00;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
+
 .vehicle-info .price {
   font-size: 1.3rem;
   font-weight: 700;
@@ -559,7 +668,8 @@ nav {
     padding: 1.5rem;
   }
   
-  .datetime-grid {
+  .datetime-grid,
+  .contact-grid {
     grid-template-columns: 1fr;
   }
   

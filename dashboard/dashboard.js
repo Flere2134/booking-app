@@ -9,12 +9,24 @@ window.onload = () => {
   flatpickr("#booking-time", {
     enableTime: true,
     noCalendar: true,
-    dateFormat: "H:i",
-    time_24hr: true
+    dateFormat: "h:i K",
+    time_24hr: false
   });
   
   // Initialize ride selection functionality on page load
   initializeRideSelection();
+  
+  // Initialize autocomplete for both inputs
+  initializeAutocomplete('pickup', 'pickupDropdown');
+  initializeAutocomplete('dropoff', 'dropoffDropdown');
+  
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.autocomplete-wrapper')) {
+      document.getElementById('pickupDropdown').classList.remove('show');
+      document.getElementById('dropoffDropdown').classList.remove('show');
+    }
+  });
 };
 
 let selectedRide = null;
@@ -22,7 +34,188 @@ let currentBookingId = null;
 let currentDistance = 0;
 let currentDuration = 0;
 
-// Geocoding function to get coordinates from address
+// Store selected coordinates for each input
+let pickupCoords = null;
+let dropoffCoords = null;
+
+// Debounce function for search
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// Search locations using Nominatim
+async function searchLocations(query, limit = 5) {
+  try {
+    const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=${limit}&addressdetails=1`);
+    const data = await response.json();
+    return data.map(item => ({
+      display_name: item.display_name,
+      lat: parseFloat(item.lat),
+      lng: parseFloat(item.lon),
+      type: item.type,
+      address: item.address
+    }));
+  } catch (error) {
+    console.error('Search error:', error);
+    return [];
+  }
+}
+
+// Initialize autocomplete for an input
+function initializeAutocomplete(inputId, dropdownId) {
+  const input = document.getElementById(inputId);
+  const dropdown = document.getElementById(dropdownId);
+  let currentSearchTimeout;
+  let selectedIndex = -1;
+
+  const debouncedSearch = debounce(async (query) => {
+    if (query.length < 2) {
+      hideDropdown();
+      return;
+    }
+
+    showLoading();
+    const results = await searchLocations(query);
+    displayResults(results);
+  }, 300);
+
+  function showLoading() {
+    dropdown.innerHTML = '<div class="autocomplete-loading"><i class="bx bx-loader-alt bx-spin"></i> Searching...</div>';
+    dropdown.classList.add('show');
+  }
+
+  function hideDropdown() {
+    dropdown.classList.remove('show');
+    selectedIndex = -1;
+  }
+
+  function displayResults(results) {
+    if (results.length === 0) {
+      dropdown.innerHTML = '<div class="autocomplete-no-results">No locations found</div>';
+      return;
+    }
+
+    dropdown.innerHTML = results.map((result, index) => {
+      const title = result.address?.city || result.address?.town || result.address?.village || result.display_name.split(',')[0];
+      const subtitle = result.display_name;
+      
+      return `
+        <div class="autocomplete-item" data-index="${index}" data-lat="${result.lat}" data-lng="${result.lng}" data-display="${result.display_name}">
+          <i class="bx bx-map-pin"></i>
+          <div class="autocomplete-item-content">
+            <div class="autocomplete-item-title">${title}</div>
+            <div class="autocomplete-item-subtitle">${subtitle}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    dropdown.classList.add('show');
+    attachItemListeners();
+  }
+
+  function attachItemListeners() {
+    const items = dropdown.querySelectorAll('.autocomplete-item');
+    items.forEach((item, index) => {
+      item.addEventListener('click', () => selectItem(item));
+      item.addEventListener('mouseenter', () => highlightItem(index));
+    });
+  }
+
+  function selectItem(item) {
+    const display = item.dataset.display;
+    const lat = parseFloat(item.dataset.lat);
+    const lng = parseFloat(item.dataset.lng);
+
+    input.value = display;
+    
+    // Store coordinates based on input type
+    if (inputId === 'pickup') {
+      pickupCoords = { lat, lng };
+    } else {
+      dropoffCoords = { lat, lng };
+    }
+
+    hideDropdown();
+    validateFormFields();
+    resetPrices();
+  }
+
+  function highlightItem(index) {
+    const items = dropdown.querySelectorAll('.autocomplete-item');
+    items.forEach((item, i) => {
+      item.classList.toggle('highlighted', i === index);
+    });
+    selectedIndex = index;
+  }
+
+  // Input event listeners
+  input.addEventListener('input', (e) => {
+    const query = e.target.value.trim();
+    
+    // Clear stored coordinates when input changes
+    if (inputId === 'pickup') {
+      pickupCoords = null;
+    } else {
+      dropoffCoords = null;
+    }
+    
+    debouncedSearch(query);
+  });
+
+  input.addEventListener('keydown', (e) => {
+    const items = dropdown.querySelectorAll('.autocomplete-item');
+    
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+        highlightItem(selectedIndex);
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        selectedIndex = Math.max(selectedIndex - 1, -1);
+        if (selectedIndex >= 0) {
+          highlightItem(selectedIndex);
+        }
+        break;
+      case 'Enter':
+        e.preventDefault();
+        if (selectedIndex >= 0 && items[selectedIndex]) {
+          selectItem(items[selectedIndex]);
+        }
+        break;
+      case 'Escape':
+        hideDropdown();
+        break;
+    }
+  });
+
+  input.addEventListener('blur', (e) => {
+    // Delay hiding to allow click events on dropdown items
+    setTimeout(() => {
+      if (!dropdown.contains(document.activeElement)) {
+        hideDropdown();
+      }
+    }, 200);
+  });
+
+  input.addEventListener('focus', () => {
+    if (input.value.length >= 2) {
+      debouncedSearch(input.value);
+    }
+  });
+}
+
+// Geocoding function to get coordinates from address (fallback)
 async function geocodeAddress(address) {
   try {
     const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`);
@@ -72,9 +265,9 @@ function calculatePrice(distance, baseRate) {
 // Update vehicle prices
 function updateVehiclePrices(distance) {
   const vehicles = [
-    { id: 'sedanPrice', type: 'Sedan', rate: 25 },
-    { id: 'suvPrice', type: 'SUV', rate: 35 },
-    { id: 'vanPrice', type: 'Van', rate: 45 }
+    { id: 'l300Price', type: 'L300', rate: 30 },
+    { id: 'grandiaPrice', type: 'Grandia Van', rate: 40 },
+    { id: 'truckPrice', type: '10-Wheeler Truck', rate: 60 }
   ];
 
   vehicles.forEach(vehicle => {
@@ -98,9 +291,18 @@ async function showRideSelection() {
   const dropoff = document.getElementById("dropoff").value.trim();
   const date = document.getElementById("booking-date").value;
   const time = document.getElementById("booking-time").value;
+  const contactPerson = document.getElementById("contact-person").value.trim();
+  const phoneNumber = document.getElementById("phone-number").value.trim();
 
-  if (!pickup || !dropoff || !date || !time) {
-    alert("Please fill in all booking details including date and time.");
+  if (!pickup || !dropoff || !date || !time || !contactPerson || !phoneNumber) {
+    alert("Please fill in all booking details including contact information.");
+    return;
+  }
+
+  // Validate phone number format (basic validation)
+  const phonePattern = /^[\+]?[0-9\s\-\(\)]+$/;
+  if (!phonePattern.test(phoneNumber)) {
+    alert("Please enter a valid phone number.");
     return;
   }
 
@@ -120,12 +322,20 @@ async function showRideSelection() {
   findRidesBtn.disabled = true;
 
   try {
-    // Get coordinates for both addresses
-    const pickupCoords = await geocodeAddress(pickup);
-    const dropoffCoords = await geocodeAddress(dropoff);
+    // Use stored coordinates if available, otherwise geocode
+    let finalPickupCoords = pickupCoords;
+    let finalDropoffCoords = dropoffCoords;
+    
+    if (!finalPickupCoords) {
+      finalPickupCoords = await geocodeAddress(pickup);
+    }
+    
+    if (!finalDropoffCoords) {
+      finalDropoffCoords = await geocodeAddress(dropoff);
+    }
     
     // Calculate route
-    const route = await calculateRoute(pickupCoords, dropoffCoords);
+    const route = await calculateRoute(finalPickupCoords, finalDropoffCoords);
     currentDistance = route.distance;
     currentDuration = route.duration;
     
@@ -163,6 +373,8 @@ async function showRideSelection() {
         dropoff,
         date,
         time,
+        contactPerson,
+        phoneNumber,
         distance: currentDistance,
         duration: currentDuration,
         status: "in_progress",
@@ -251,6 +463,8 @@ const pickupInput = document.getElementById("pickup");
 const dropoffInput = document.getElementById("dropoff");
 const dateInput = document.getElementById("booking-date");
 const timeInput = document.getElementById("booking-time");
+const contactPersonInput = document.getElementById("contact-person");
+const phoneNumberInput = document.getElementById("phone-number");
 const seePricesBtn = document.getElementById("seePricesBtn");
 
 function validateFormFields() {
@@ -258,28 +472,54 @@ function validateFormFields() {
     pickupInput.value.trim() !== "" &&
     dropoffInput.value.trim() !== "" &&
     dateInput.value !== "" &&
-    timeInput.value !== "";
+    timeInput.value !== "" &&
+    contactPersonInput.value.trim() !== "" &&
+    phoneNumberInput.value.trim() !== "";
 
   seePricesBtn.disabled = !isFilled;
 }
 
 // Reset prices when inputs change
 function resetPrices() {
-  document.getElementById("sedanPrice").textContent = "Enter route";
-  document.getElementById("suvPrice").textContent = "Enter route";
-  document.getElementById("vanPrice").textContent = "Enter route";
+  document.getElementById("l300Price").textContent = "Enter route";
+  document.getElementById("grandiaPrice").textContent = "Enter route";
+  document.getElementById("truckPrice").textContent = "Enter route";
   document.getElementById("distanceInfo").style.display = "none";
   currentDistance = 0;
   currentDuration = 0;
 }
 
+// Phone number formatting
+function formatPhoneNumber(input) {
+  let value = input.value.replace(/\D/g, ''); // Remove non-digits
+  
+  // Add formatting for Philippine numbers
+  if (value.startsWith('63')) {
+    // International format: +63 XXX XXX XXXX
+    value = value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})/, '+$1 $2 $3 $4');
+  } else if (value.startsWith('09')) {
+    // Local format: 09XX XXX XXXX
+    value = value.replace(/(\d{4})(\d{3})(\d{4})/, '$1 $2 $3');
+  } else if (value.length >= 10) {
+    // General format: XXX XXX XXXX
+    value = value.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
+  }
+  
+  input.value = value;
+}
+
 // Attach input listeners
-[pickupInput, dropoffInput, dateInput, timeInput].forEach((input) => {
+[pickupInput, dropoffInput, dateInput, timeInput, contactPersonInput, phoneNumberInput].forEach((input) => {
   input.addEventListener("input", validateFormFields);
   
   // Reset prices when pickup or dropoff changes
   if (input === pickupInput || input === dropoffInput) {
     input.addEventListener("input", resetPrices);
+  }
+  
+  // Format phone number as user types
+  if (input === phoneNumberInput) {
+    input.addEventListener("input", () => formatPhoneNumber(input));
   }
 });
 
